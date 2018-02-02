@@ -556,14 +556,7 @@ def makeWebhookDoctorResult(data):
     }
 
 if __name__ == '__main__':
-    database = Database.Database()
-    database.load("cognitiveSQL/database/inventory.sql")
-    #database.print_me()
 
-    config = LangConfig.LangConfig()
-    config.load("cognitiveSQL/lang/english.csv")
-
-    parser = Parser.Parser(database, config)
     from os import sys, path
     sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
     port = int(os.getenv('PORT', 5000))
