@@ -22,13 +22,6 @@ from flask import make_response
 from flask import url_for, redirect
 import psycopg2
 
-
-import cognitiveSQL.Database as Database
-import cognitiveSQL.LangConfig as LangConfig
-import cognitiveSQL.Parser as Parser
-import cognitiveSQL.Thesaurus as Thesaurus
-import cognitiveSQL.StopwordFilter as StopwordFilter
-
 import apiai
 
 # Flask app should start in global layout
