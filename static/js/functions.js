@@ -104,7 +104,7 @@ console.log(voices);
 
 var recognition;
 nlp = window.nlp_compromise;
-var accessToken = "872500f5983f46568df07d5ab0305eed";
+var accessToken = "66ad5ee869a34d3593181c0f9ff0922c";
 var baseUrl = "https://api.api.ai/v1/";
 var messages = [], //array that hold the record of each string in chat
 lastUserMessage = "", //keeps track of the most recent input string from the user
