@@ -52,7 +52,7 @@ def speech():
 # def inventory():
 #     return redirect(url_for('static_url', filename='index.html'))
 
-@app.route('/webhook', methods=['POST'])
+@app.route('/medical-affair', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
 
