@@ -3,6 +3,8 @@
 #test
 
 from __future__ import print_function
+
+import datetime
 from future.standard_library import install_aliases
 
 install_aliases()
@@ -30,20 +32,69 @@ import apiai
 app = Flask(__name__, static_url_path='')
 parser = ""
 
-url = urlparse("postgres://caedtehsggslri:4679ba0abec57484a1d7ed261b74e80b08391993433c77c838c58415087a9c34@ec2-107-20-255-96.compute-1.amazonaws.com:5432/d5tmi1ihm5f6hv")
-print (url.path[1:])
-conn = psycopg2.connect(
-    database=url.path[1:],
-    user=url.username,
-    password=url.password,
-    host=url.hostname,
-    port=url.port
-)
 
 # @app.route('/')
 # def index():
 #     return redirect(url_for('static_url', filename='index.html'))
 
+def select_inquiry_response(prod_name, columnName):
+    try:
+        url = urlparse(
+            "postgres://caedtehsggslri:4679ba0abec57484a1d7ed261b74e80b08391993433c77c838c58415087a9c34@ec2-107-20-255-96.compute-1.amazonaws.com:5432/d5tmi1ihm5f6hv")
+        print(url.path[1:])
+        conn = psycopg2.connect(
+            database=url.path[1:],
+            user=url.username,
+            password=url.password,
+            host=url.hostname,
+            port=url.port
+        )
+        cur = conn.cursor()
+        sql = "select " + columnName + " from public.inquiry_response where product_name = '%s' limit %s" %(prod_name,1)
+        cur.execute(sql)
+        row = cur.fetchone()
+        #print(row[1])
+        #print("The number of parts: ", cur.rowcount)
+        cur.close()
+        return row
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+
+def insert_inquiry_details(division,country,master_prod,inquiry,customer_type,customer_channel,facilitated_unfacilitated,case_create_dt,case_clsd_dt,resp_id,response):
+
+    sql = "INSERT INTO public.inquiry_data (Division,Country,Master_Prod ,Inquiry,Customer_Type,Customer_channel,Facilitated_Unfacilitated,Case_Create_Date,Case_Closed_Date,Resp_Id,Response) VALUES(%s, %s, %s, %s, %s, %s,%s,%s, %s, %s, %s)";
+
+    try:
+        # read database configuration
+        #params = config()
+        # connect to the PostgreSQL database
+        url = urlparse(
+            "postgres://caedtehsggslri:4679ba0abec57484a1d7ed261b74e80b08391993433c77c838c58415087a9c34@ec2-107-20-255-96.compute-1.amazonaws.com:5432/d5tmi1ihm5f6hv")
+        #print(url.path[1:])
+        conn = psycopg2.connect(
+            database=url.path[1:],
+            user=url.username,
+            password=url.password,
+            host=url.hostname,
+            port=url.port
+        )
+        # create a new cursor
+        cur = conn.cursor()
+        # execute the INSERT statement
+        cur.execute(sql,(division,country,master_prod,inquiry,customer_type,customer_channel,facilitated_unfacilitated,case_create_dt,case_clsd_dt,resp_id,response))
+        # commit the changes to the database
+        conn.commit()
+        # close communication with the database
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 @app.route('/speech')
 def speech():
@@ -60,7 +111,7 @@ def medicalAffair():
     print("Request:")
     print(json.dumps(req, indent=4))
 
-    res = processRequest(req)
+    res = processRequest    (req)
 
     res = json.dumps(res, indent=4)
     print(res)
@@ -71,90 +122,95 @@ def medicalAffair():
 
 def processRequest(req):
     print(req.get("result").get("action"))
-    if (req.get("result").get("action") == "employee.information"):
-        print("Employee Information")
-        # parameters = req.get("result").get("parameters")
-        # table = parameters.get("tables")
-        # print(table)
-        # attribute = parameters.get("attribute")
-        # operation = parameters.get("operation")
-        # print(operation)
-        # if ((operation[0] is not None) and (operation[0] == "count")):
-        #     cur = conn.cursor()
-        #     cur.execute("select count(*) from " + table[0])
-        #     rows = cur.fetchall()
-        #     print(rows[0])
-        #     outText = "There are " + str(rows[0][0]) + " number of " + str(table[0]) + "s"
-        #     return {
-        #         "speech": outText,
-        #         "displayText": outText,
-        #         # "data": data,
-        #         # "contextOut": [],
-        #         "source": "Dhaval"
-        #     }
-        incoming_query = req.get("result").get("resolvedQuery")
-        queries = parser.parse_sentence(incoming_query)
-        #print(query for query in queries)
-        queryString = ""
-        table = ""
-        for query in queries:
-            table = query.get_from().get_table()
-            queryString = queryString + str(query)
-        print(queryString)
-        cur = conn.cursor()
-        cur.execute(queryString)
-        rows = cur.fetchall()
-        outText = str(rows[0][0])
-        return {
-            "speech": outText,
-            "displayText": outText,
-            # "data": data,
-            # "contextOut": [],
-            "source": "Dhaval"
-        }
-    elif (req.get("result").get("action") == "inventory.search"):
-        print("Inventory Search")
-        # parameters = req.get("result").get("parameters")
-        # table = parameters.get("tables")
-        # print(table)
-        # attribute = parameters.get("attribute")
-        # operation = parameters.get("operation")
-        # print(operation)
-        # if ((operation[0] is not None) and (operation[0] == "count")):
-        #     cur = conn.cursor()
-        #     cur.execute("select count(*) from " + table[0])
-        #     rows = cur.fetchall()
-        #     print(rows[0])
-        #     outText = "There are " + str(rows[0][0]) + " number of " + str(table[0]) + "s"
-        #     return {
-        #         "speech": outText,
-        #         "displayText": outText,
-        #         # "data": data,
-        #         # "contextOut": [],
-        #         "source": "Dhaval"
-        #     }
-        incoming_query = req.get("result").get("resolvedQuery")
-        queries = parser.parse_sentence(incoming_query.lower())
-        #print(query for query in queries)
-        queryString = ""
-        table = ""
-        for query in queries:
-            table = query.get_from().get_table()
-            queryString = queryString + str(query)
-        print(queryString)
-        cur = conn.cursor()
-        cur.execute(queryString)
-        rows = cur.fetchall()
-        # outText = ', '.join(str(x) for x in rows[0])
-        outText = ', '.join(str(element).split(".")[0] for row in rows for element in row)
-        # print(','.join(str(element) for row in rows for element in row))
-        return {
-            "speech": outText,
-            "displayText": outText,
-            # "data": data,
-            # "contextOut": [],
-            "source": "Dhaval"
-        }
+    actionIncompleteStatus = req.get("result").get("actionIncomplete")
+    print(actionIncompleteStatus)
+    fac_unfac = ""
+    master_prod=""
+    response = ""
+    status = False
+    if (not actionIncompleteStatus):
+        print("Accepted")
+        if ((req.get("result").get("action") is not None) or (req.get("result").get("parameters").get("ProductName") is not None) or (req.get("result").get("parameters").get("UserRegion") is not None) or (req.get("result").get("UserAge").get("amount") is not None) or (req.get("result").get("UserAge").get("unit") is not None)):
+            if (req.get("result").get("action") == "ProdAppearance"):
+                print("ProdApperance")
+                Prod_Response = select_inquiry_response(req.get("result").get("parameters").get("ProductName"),"Apperance")
+                if Prod_Response != None:
+                    status = True;
+                    fac_unfac = 'Facilitated'
+                    master_prod = 'Product Appearance'
+                    response = Prod_Response[0]
+                else:
+                    status = False;
+                    fac_unfac = 'Unfacilitated'
+            elif (req.get("result").get("action") == "ProdAvailability"):
+                print("ProdAvailability")
+                Prod_Response = select_inquiry_response(req.get("result").get("parameters").get("ProductName"),"Availability")
+                if Prod_Response != None:
+                    status = True;
+                    fac_unfac = 'Facilitated'
+                    master_prod = 'Product Availability'
+                    response = Prod_Response[0]
+                else:
+                    status = False;
+                    fac_unfac = 'Unfacilitated'
+            elif (req.get("result").get("action") == "ProdGenericAvailability"):
+                print("ProdGenericAvailable")
+                Prod_Response = select_inquiry_response(req.get("result").get("parameters").get("ProductName"),"Generic_Availables")
+                if Prod_Response != None:
+                    status = True;
+                    fac_unfac = 'Facilitated'
+                    master_prod = 'Product Generic Availability'
+                    response = Prod_Response[0]
+                else:
+                    status = False;
+                    fac_unfac = 'Unfacilitated'
+                #Default else
+            else:
+                status =False;
+    else :
+        status = False;
+    # final if Statement
+    if status:
+            insert_inquiry_details('Amer',
+                                   req.get("result").get("parameters").get("UserRegion"),
+                                   req.get("result").get("parameters").get("ProductName"),
+                                   master_prod,
+                                   req.get("result").get("UserProfession"),
+                                   req.get("result").get("source"),
+                                   fac_unfac,
+                                   datetime.datetime.utcnow(),
+                                   datetime.datetime.utcnow(),
+                                   0,
+                                   response
+                                   )
+            return {
+                "speech": response,
+                "displayText": response,
+                # "data": data,
+                # "contextOut": [],
+                "source": req.get("result").get("source")
+            }
+    else:
+            # insert_inquiry_details('Amer',
+            #                        req.get("result").get("parameters").get("UserRegion"),
+            #                        req.get("result").get("parameters").get("ProductName"),
+            #                        'Data Not Found',
+            #                        req.get("result").get("UserProfession"),
+            #                        req.get("result").get("source"),
+            #                        'Unfacilitated',
+            #                        datetime.datetime.utcnow(),
+            #                        datetime.datetime.utcnow(),
+            #                        0,
+            #                        "Details not found"
+            #                        )
+            return {
+                "speech": "Details Not found",
+                "displayText": "Details Not found",
+                # "data": data,
+                # "contextOut": [],
+                "source": req.get("result").get("source")
+            }
+
 
 def makeYqlQuery(req):
     result = req.get("result")
