@@ -132,15 +132,20 @@ def processRequest(req):
         print("Skipping")
     else:
         print("Accepted")
-        if ((req.get("result").get("action") is not None) or (req.get("result").get("parameters").get("ProductName") is not None) or (req.get("result").get("parameters").get("UserRegion") is not None) or (req.get("result").get("UserAge").get("amount") is not None) or (req.get("result").get("UserAge").get("unit") is not None)):
+        if ((req.get("result").get("action") is not None) or (req.get("result").get("parameters").get("ProductName") is not None) or (req.get("result").get("parameters").get("UserCountry") is not None) or (req.get("result").get("UserAge").get("amount") is not None) or (req.get("result").get("UserAge").get("unit") is not None)):
             if (req.get("result").get("action") == "ProdAppearance"):
                 print("ProdApperance")
                 Prod_Response = select_inquiry_response(req.get("result").get("parameters").get("ProductName"),"Apperance")
                 if Prod_Response != None:
                     status = True;
-                    fac_unfac = 'Facilitated'
-                    master_prod = 'Product Appearance'
-                    response = Prod_Response[0]
+                    if len(Prod_Response[0]) > 0:
+                        fac_unfac = 'Facilitated'
+                        response = Prod_Response[0] + "Was this information useful?"
+                    else:
+                        fac_unfac = 'Unfacilitated'
+                        response =  "Currently the information is not available. Our representative will get back to you on your email id. Kindly provide your email id"
+                    master_prod = 'Product Availability'
+                    # response = Prod_Response[0]
                 else:
                     status = False;
                     fac_unfac = 'Unfacilitated'
@@ -149,9 +154,14 @@ def processRequest(req):
                 Prod_Response = select_inquiry_response(req.get("result").get("parameters").get("ProductName"),"Availability")
                 if Prod_Response != None:
                     status = True;
-                    fac_unfac = 'Facilitated'
+                    if len(Prod_Response[0]) > 0:
+                        fac_unfac = 'Facilitated'
+                        response = Prod_Response[0] + "Was this information useful?"
+                    else:
+                        fac_unfac = 'Unfacilitated'
+                        response = "Currently the information is not available. Our representative will get back to you on your email id. Kindly provide your email id"
                     master_prod = 'Product Availability'
-                    response = Prod_Response[0]
+                    # response = Prod_Response[0]
                 else:
                     status = False;
                     fac_unfac = 'Unfacilitated'
@@ -160,9 +170,14 @@ def processRequest(req):
                 Prod_Response = select_inquiry_response(req.get("result").get("parameters").get("ProductName"),"Generic_Availables")
                 if Prod_Response != None:
                     status = True;
-                    fac_unfac = 'Facilitated'
-                    master_prod = 'Product Generic Availability'
-                    response = Prod_Response[0]
+                    if len(Prod_Response[0]) > 0:
+                        fac_unfac = 'Facilitated'
+                        response = Prod_Response[0]+ "Was this information useful?"
+                    else:
+                        fac_unfac = 'Unfacilitated'
+                        response = "Currently the information is not available. Our representative will get back to you on your email id. Kindly provide your email id"
+                    master_prod = 'Product Availability'
+                    #response = Prod_Response[0]
                 else:
                     status = False;
                     fac_unfac = 'Unfacilitated'
@@ -173,10 +188,10 @@ def processRequest(req):
     # final if Statement
         if status:
                 insert_inquiry_details('Amer',
-                                       req.get("result").get("parameters").get("UserRegion"),
+                                       req.get("result").get("parameters").get("UserCountry"),
                                        req.get("result").get("parameters").get("ProductName"),
                                        master_prod,
-                                       req.get("result").get("UserProfession"),
+                                       req.get("result").get("parameters").get("UserOccupation"),
                                        req.get("result").get("source"),
                                        fac_unfac,
                                        datetime.datetime.utcnow(),
@@ -205,13 +220,12 @@ def processRequest(req):
                 #                        "Details not found"
                 #                        )
                 return {
-                    "speech": "Details Not found",
-                    "displayText": "Details Not found",
+                    "speech": "Currently the information is not available. Our representative will get back to you on your email id. Kindly provide your email id",
+                    "displayText": "Currently the information is not available. Our representative will get back to you on your email id. Kindly provide your email id",
                     # "data": data,
                     # "contextOut": [],
                     "source": req.get("result").get("source")
                 }
-
 
 def makeYqlQuery(req):
     result = req.get("result")
