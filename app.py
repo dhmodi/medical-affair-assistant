@@ -128,7 +128,7 @@ def processRequest(req):
     master_prod=""
     response = ""
     status = False
-    if (not actionIncompleteStatus):
+    if not actionIncompleteStatus:
         print("Accepted")
         if ((req.get("result").get("action") is not None) or (req.get("result").get("parameters").get("ProductName") is not None) or (req.get("result").get("parameters").get("UserRegion") is not None) or (req.get("result").get("UserAge").get("amount") is not None) or (req.get("result").get("UserAge").get("unit") is not None)):
             if (req.get("result").get("action") == "ProdAppearance"):
