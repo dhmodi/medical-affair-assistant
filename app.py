@@ -167,49 +167,50 @@ def processRequest(req):
                 #Default else
             else:
                 status =False;
-    else :
-        status = False;
+
     # final if Statement
-    if status:
-            insert_inquiry_details('Amer',
-                                   req.get("result").get("parameters").get("UserRegion"),
-                                   req.get("result").get("parameters").get("ProductName"),
-                                   master_prod,
-                                   req.get("result").get("UserProfession"),
-                                   req.get("result").get("source"),
-                                   fac_unfac,
-                                   datetime.datetime.utcnow(),
-                                   datetime.datetime.utcnow(),
-                                   0,
-                                   response
-                                   )
-            return {
-                "speech": response,
-                "displayText": response,
-                # "data": data,
-                # "contextOut": [],
-                "source": req.get("result").get("source")
-            }
+        if status:
+                insert_inquiry_details('Amer',
+                                       req.get("result").get("parameters").get("UserRegion"),
+                                       req.get("result").get("parameters").get("ProductName"),
+                                       master_prod,
+                                       req.get("result").get("UserProfession"),
+                                       req.get("result").get("source"),
+                                       fac_unfac,
+                                       datetime.datetime.utcnow(),
+                                       datetime.datetime.utcnow(),
+                                       0,
+                                       response
+                                       )
+                return {
+                    "speech": response,
+                    "displayText": response,
+                    # "data": data,
+                    # "contextOut": [],
+                    "source": req.get("result").get("source")
+                }
+        else:
+                # insert_inquiry_details('Amer',
+                #                        req.get("result").get("parameters").get("UserRegion"),
+                #                        req.get("result").get("parameters").get("ProductName"),
+                #                        'Data Not Found',
+                #                        req.get("result").get("UserProfession"),
+                #                        req.get("result").get("source"),
+                #                        'Unfacilitated',
+                #                        datetime.datetime.utcnow(),
+                #                        datetime.datetime.utcnow(),
+                #                        0,
+                #                        "Details not found"
+                #                        )
+                return {
+                    "speech": "Details Not found",
+                    "displayText": "Details Not found",
+                    # "data": data,
+                    # "contextOut": [],
+                    "source": req.get("result").get("source")
+                }
     else:
-            # insert_inquiry_details('Amer',
-            #                        req.get("result").get("parameters").get("UserRegion"),
-            #                        req.get("result").get("parameters").get("ProductName"),
-            #                        'Data Not Found',
-            #                        req.get("result").get("UserProfession"),
-            #                        req.get("result").get("source"),
-            #                        'Unfacilitated',
-            #                        datetime.datetime.utcnow(),
-            #                        datetime.datetime.utcnow(),
-            #                        0,
-            #                        "Details not found"
-            #                        )
-            return {
-                "speech": "Details Not found",
-                "displayText": "Details Not found",
-                # "data": data,
-                # "contextOut": [],
-                "source": req.get("result").get("source")
-            }
+        status = False;
 
 
 def makeYqlQuery(req):
