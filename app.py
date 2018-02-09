@@ -209,8 +209,6 @@ def processRequest(req):
                     # "contextOut": [],
                     "source": req.get("result").get("source")
                 }
-    else:
-        status = False;
 
 
 def makeYqlQuery(req):
