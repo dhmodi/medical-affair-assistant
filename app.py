@@ -2,8 +2,26 @@
 
 from __future__ import print_function
 from future.standard_library import install_aliases
-
+import cx_Oracle
 install_aliases()
+import json
+import os
+import sys
+import pandas as pd
+sys.path.append('cognitiveSQL')
+from flask import Flask
+from flask import request
+from flask import make_response
+from flask import url_for, redirect
+from flask_socketio import SocketIO, send, emit
+import subprocess
+
+import cognitiveSQL.Database as Database
+import cognitiveSQL.LangConfig as LangConfig
+import cognitiveSQL.Parser as Parser
+import cognitiveSQL.Thesaurus as Thesaurus
+import cognitiveSQL.StopwordFilter as StopwordFilter
+from cognitiveSQL.HashMap import hashMap_columns
 
 from urllib.parse import urlparse, urlencode
 from urllib.request import urlopen, Request
@@ -23,9 +41,9 @@ from flask import url_for, redirect
 import psycopg2
 
 import apiai
-
 # Flask app should start in global layout
 app = Flask(__name__, static_url_path='')
+socketio = SocketIO(app)
 parser = ""
 
 url = urlparse("postgres://caedtehsggslri:4679ba0abec57484a1d7ed261b74e80b08391993433c77c838c58415087a9c34@ec2-107-20-255-96.compute-1.amazonaws.com:5432/d5tmi1ihm5f6hv")
@@ -68,84 +86,210 @@ def medicalAffair():
 
 
 def processRequest(req):
-    print(req.get("result").get("action"))
-    if (req.get("result").get("action") == "employee.information"):
-        print("Employee Information")
-        # parameters = req.get("result").get("parameters")
-        # table = parameters.get("tables")
-        # print(table)
-        # attribute = parameters.get("attribute")
-        # operation = parameters.get("operation")
-        # print(operation)
-        # if ((operation[0] is not None) and (operation[0] == "count")):
-        #     cur = conn.cursor()
-        #     cur.execute("select count(*) from " + table[0])
-        #     rows = cur.fetchall()
-        #     print(rows[0])
-        #     outText = "There are " + str(rows[0][0]) + " number of " + str(table[0]) + "s"
-        #     return {
-        #         "speech": outText,
-        #         "displayText": outText,
-        #         # "data": data,
-        #         # "contextOut": [],
-        #         "source": "Dhaval"
-        #     }
+    if (req.get("result").get("action") == "medical.search"):
+        print("Medical Search")
         incoming_query = req.get("result").get("resolvedQuery")
-        queries = parser.parse_sentence(incoming_query)
+        hashColumn_csv = 'cognitiveSQL/alias/synonyms.csv'
+        global OutMap
+        OutMap={}
+        (input_sentence, OutMap) = hashMap_columns(str(incoming_query).lower(), hashColumn_csv, OutMap)
+        print(input_sentence)
+        print(OutMap)
         #print(query for query in queries)
+        queries = parser.parse_sentence(input_sentence)
         queryString = ""
         table = ""
         for query in queries:
             table = query.get_from().get_table()
+            columns = query.get_select().get_columns()
+            conditions = query.get_where().get_conditions()
             queryString = queryString + str(query)
+        print("table:")
+        print(table)
+        print(list(columns))
+        # xAxis = columns[0][0].split('.')[1]
+        # yAxis = columns[1][0].split('.')[1]
         print(queryString)
         cur = conn.cursor()
         cur.execute(queryString)
         rows = cur.fetchall()
-        outText = str(rows[0][0])
-        return {
-            "speech": outText,
-            "displayText": outText,
-            # "data": data,
-            # "contextOut": [],
-            "source": "Dhaval"
-        }
-    elif (req.get("result").get("action") == "inventory.search"):
-        print("Inventory Search")
-        # parameters = req.get("result").get("parameters")
-        # table = parameters.get("tables")
-        # print(table)
-        # attribute = parameters.get("attribute")
-        # operation = parameters.get("operation")
-        # print(operation)
-        # if ((operation[0] is not None) and (operation[0] == "count")):
-        #     cur = conn.cursor()
-        #     cur.execute("select count(*) from " + table[0])
-        #     rows = cur.fetchall()
-        #     print(rows[0])
-        #     outText = "There are " + str(rows[0][0]) + " number of " + str(table[0]) + "s"
-        #     return {
-        #         "speech": outText,
-        #         "displayText": outText,
-        #         # "data": data,
-        #         # "contextOut": [],
-        #         "source": "Dhaval"
-        #     }
-        incoming_query = req.get("result").get("resolvedQuery")
-        queries = parser.parse_sentence(incoming_query.lower())
-        #print(query for query in queries)
-        queryString = ""
-        table = ""
-        for query in queries:
-            table = query.get_from().get_table()
-            queryString = queryString + str(query)
-        print(queryString)
-        cur = conn.cursor()
-        cur.execute(queryString)
-        rows = cur.fetchall()
+
         # outText = ', '.join(str(x) for x in rows[0])
-        outText = ', '.join(str(element).split(".")[0] for row in rows for element in row)
+        # outText = ', '.join(str(element).split(".")[0] for row in rows for element in row)
+        count = 0
+        if len(conditions) != 0:
+            whereColumn = []
+            whereValue = []
+            for i in range(0, len(conditions)):
+                print(conditions[i][1].get_column().rsplit('.', 1)[1].rstrip(')'))
+                print(conditions[i][1].get_value().strip("'"))
+                whereColumn.append(conditions[i][1].get_column().rsplit('.', 1)[1].rstrip(')'))
+
+                if " MAX" not in conditions[i][1].get_value() and " MIN" not in conditions[i][1].get_value():
+                    whereValue.append(conditions[i][1].get_value().strip("'"))
+                else:
+                    if " MAX" in conditions[i][1].get_value():
+                        whereValue.append("max")
+                    else:
+                        whereValue.append("min")
+        outText = "The "
+        # if len(rows)==1:
+        for row in rows:
+            isLast = len(row)
+            for element in row:
+                isLast = isLast - 1
+                value = str(element).split(".")[0]
+                if (columns[count][0] is not None):
+                    # print(columns)
+                    column = columns[count][0].split('.')[1]
+                operation = columns[count][1]
+                if (operation is None):
+                    print("The Operation is None")
+                    column = OutMap.get(column)
+                    whereValue1 = OutMap.get(whereValue[0]) if (OutMap.get(whereValue[0])) else whereValue[0]
+                    whereColumn1 = OutMap.get(whereColumn[0]) if (OutMap.get(whereColumn[0])) else whereColumn[0]
+                    try:
+                        print(whereValue[1])
+                        print(whereColumn[1])
+                        whereValue2 = OutMap.get(whereValue[1]) if (OutMap.get(whereValue[1])) else whereValue[1]
+                        whereColumn2 = OutMap.get(whereColumn[1]) if (OutMap.get(whereColumn[1])) else whereColumn[1]
+                        if 'whereColumn' in locals():
+                            # outText = str(column) + " " + value + " in the " + str(whereColumn1) + " " + str(
+                            #     whereValue1) + " has " + str(whereValue2) + " " + str(whereColumn2)
+                            outText = "The " + str(column) + " for " + str(whereColumn1) + " " + str(whereValue1)+ " in " + str(whereColumn2) + " is " + value + "%"
+                        else:
+                            outText = outText + str(column) + " is " + value
+
+                    except IndexError:
+                        if 'whereColumn' in locals():
+                            outText = str(column) + " " + value + " has " + str(whereValue1) + " " + str(whereColumn1)
+                        else:
+                            outText = outText + str(column) + " is " + value
+
+                elif (operation is "COUNT"):
+                    table = OutMap.get(table)
+                    print("The Operation is " + str(operation))
+                    if 'whereColumn' in locals():
+                        outText = "There are " + value + " " + str(table) + " with " + str(
+                            whereValue[0]) + " " + str(whereColumn[0])
+                    else:
+                        outText = "There are " + value + " " + str(table)
+                else:
+                    # operation = OutMap.get(str(operation).lower())
+                    column = OutMap.get(column)
+                    # whereValue = OutMap.get(whereValue)
+                    print("The Operation is " + str(operation))
+                    if 'whereColumn' in locals():
+                        outText = "There are " + value + " " + str(column) + " with " + str(
+                            whereValue[0]) + " for " + str(whereValue[1]) + " " + str(whereColumn[1])
+                    else:
+                        if "what" in incoming_query:
+                            outText = "The " + OutMap.get(str(operation).lower()).lower() + " " + str(
+                                column) + " is " + value
+                        elif "how" in incoming_query:
+                            outText = "There are " + value + " " + str(column)
+                if (isLast is not 0):
+                    outText = outText + " and the "
+                    count = count + 1
+        print(outText)
+        # for row in rows:
+        #     isLast = len(row)
+        #     for element in row:
+        #         isLast = isLast - 1
+        #         value = str(element).split(".")[0]
+        #         if (columns[count][0] is not None):
+        #             # print(columns)
+        #             column = columns[count][0].split('.')[1]
+        #         operation = columns[count][1]
+        #         if (operation is None):
+        #             print("The Operation is None")
+        #             outText = outText + column + " is " + value
+        #         elif (operation is "COUNT"):
+        #             print("The Operation is " + str(operation))
+        #             outText = outText + operation + " of " + table + " is " + value
+        #         else:
+        #             print("The Operation is " + str(operation))
+        #             outText = outText + operation + " of " + column + " is " + value
+        #         if (isLast is not 0):
+        #             outText = outText + " and the "
+        #             count = count + 1
         # print(','.join(str(element) for row in rows for element in row))
+
+        return {
+            "speech": outText,
+            "displayText": outText,
+            # "data": data,
+            # "contextOut": [],
+            "source": "Dhaval"
+        }
+    elif (req.get("result").get("action") == "medical.visualization"):
+        print("Medical Visualization")
+        chartType = "line"
+        incoming_query = req.get("result").get("resolvedQuery")
+        print(incoming_query)
+        chartType = req.get("result").get("parameters").get("chart-type")
+        if (chartType == "bar"):
+            chartType = "column2d"
+        else:
+            chartType = "line"
+        hashColumn_csv = 'cognitiveSQL/alias/synonyms.csv'
+        OutMap={}
+        (input_sentence, OutMap) = hashMap_columns(str(incoming_query).lower(), hashColumn_csv, OutMap)
+        print(OutMap)
+        print(input_sentence)
+        queries = parser.parse_sentence(input_sentence)
+        # queries = parser.parse_sentence(incoming_query)
+        # print(query for query in queries)
+        queryString = ""
+        table = ""
+        for query in queries:
+            table = query.get_from().get_table()
+            columns = query.get_select().get_columns()
+            conditions = query.get_where().get_conditions()
+            queryString = queryString + str(query)
+
+        # chartType = req.get("result").get("parameters").get("chart-type")
+        # print(chartType)
+
+        print(queryString)
+        cur = conn.cursor()
+        cur.execute(queryString)
+        rows = cur.fetchall()
+        print(rows)
+        print(list(columns))
+        xAxis = columns[0][0].split('.')[1]
+        yAxis = columns[1][0].split('.')[1]
+        xAxis = OutMap.get(xAxis) if OutMap.get(xAxis) else xAxis
+        yAxis = OutMap.get(yAxis) if OutMap.get(yAxis) else yAxis
+        print(xAxis)
+        print(yAxis)
+        print(chartType)
+        df = pd.DataFrame(list(rows), columns=["label", "value"])
+        df['value'] = df['value'].fillna(0)
+        agg_df = df.groupby(['label'], as_index=False).agg({"value": "sum"})
+        maxRecord = agg_df.ix[agg_df['value'].idxmax()].to_frame().T
+        agg_df = agg_df.reset_index()
+        minRecord = agg_df.ix[agg_df['value'].idxmin()].to_frame().T
+        agg_df['label'] = agg_df['label'].astype('str')
+        agg_df['value'] = agg_df['value'].astype('str')
+        chartData = agg_df.to_json(orient='records')
+        # chartData = [{"label": str(row[0]), "value": str(row[1])} for row in rows]
+        print(chartData)
+        # chartData = json.dumps(chartData)
+        final_json = '[ { "type":"' + chartType + '", "chartcontainer":"barchart", "caption":"' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"xAxis", "yAxisName":"yAxis","source":[ { "label": "Mon", "value": "15123" }, { "label": "Tue", "value": "14233" }, { "label": "Wed", "value": "23507" }, { "label": "Thu", "value": "9110" }, { "label": "Fri", "value": "15529" }, { "label": "Sat", "value": "20803" }, { "label": "Sun", "value": "19202" } ]}]'
+        # if chartType == "column2d":
+        # final_json = '[ { "type":"' + chartType + '", "chartcontainer":"barchart", "caption":"A ' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"' + xAxis + '", "yAxisName":"' + yAxis + '", "source":' + chartData + '}]'
+        # elif chartType == "line":
+        # final_json = '[ { "type":"' + chartType + '", "chartcontainer":"linechart", "caption":"A ' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"' + xAxis + '", "yAxisName":"' + yAxis + '", "source":' + chartData + '}]'
+
+        print(final_json)
+
+        socketio.emit('chartdata', final_json)
+        outText = "The " + xAxis + " " + str(
+            maxRecord['label'].values[0]) + " has maximum " + yAxis + " while the " + xAxis + " " + str(
+            minRecord['label'].values[0]) + " has minimum " + yAxis + ". Refer to the screen for more details."
+        # outText = "Refer to the screen for more details."
+        print(outText)
         return {
             "speech": outText,
             "displayText": outText,
@@ -154,277 +298,31 @@ def processRequest(req):
             "source": "Dhaval"
         }
 
-def makeYqlQuery(req):
-    result = req.get("result")
-    parameters = result.get("parameters")
-    address = parameters.get("address")
-    if address is None:
-        return None
-    city = address.get("city")
-    # city = parameters.get("city")
-    if city is None:
-        return None
-
-    return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "')"
-
-def makeSymptomsQuery(req):
-    result = req.get("result")
-    parameters = result.get("parameters")
-    symptoms = parameters.get("symptoms")
-    #print(json.dumps(parameters))
-    #print(json.dumps(symptoms))
-    if symptoms is None:
-        return None
-    list = ",".join(symptoms)
-    print (list)
-    return "symptoms=[" + list + "]"
-
-def makeDoctorQuery(req):
-    result = req.get("result")
-    parameters = result.get("parameters")
-    city = parameters.get("geo-city")
-    symptoms = parameters.get("symptoms2")
-    print(json.dumps(symptoms))
-    if symptoms is None:
-        return None
-    print(json.dumps(city))
-    if city is None:
-        return urlencode({'query': json.dumps(symptoms)})
-    else:
-        baseurl = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCQiBWiGy-aaNrthZCShG8sOs3G_ynJkEI&"
-        q = urlencode({'address': city})
-        yql_url = baseurl + q
-        print(yql_url)
-        result = urlopen(yql_url).read()
-        print(json.dumps(result))
-        data = json.loads(result)
-        response2 = data.get('results')
-        if response2 is None:
-            return None
-        print(json.dumps(response2))
-        latitude = response2[0]['geometry']['location']['lat']
-        longitude = response2[0]['geometry']['location']['lng']
-        if (latitude is None) or (longitude is None):
-            return None
-        print(json.dumps(latitude))
-        print(json.dumps(longitude))
-        return urlencode({'query': json.dumps(symptoms), 'location': latitude + "," + longitude})
-
-def makeWebhookWeatherResult(data):
-    query = data.get('query')
-    if query is None:
-        return {}
-    result = query.get('results')
-    if result is None:
-        return {}
-
-    channel = result.get('channel')
-    if channel is None:
-        return {}
-
-    item = channel.get('item')
-    location = channel.get('location')
-    units = channel.get('units')
-    if (location is None) or (item is None) or (units is None):
-        return {}
-
-    condition = item.get('condition')
-    if condition is None:
-        return {}
-
-    # print(json.dumps(item, indent=4))
-
-    speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
-             "the temperature is " + condition.get('temp') + " " + units.get('temperature')
-
-    print("Response:")
-    print(speech)
-
-    return {
-        "speech": speech,
-        "displayText": speech,
-        # "data": data,
-        # "contextOut": [],
-        "source": "virtual-patient-assistant"
-    }
-
-def makeWebhookTemperatureResult(data):
-    print(json.dumps(data))
-    query = data.get('query')
-    if query is None:
-        return {}
-
-    result = query.get('results')
-    if result is None:
-        return {}
-
-    channel = result.get('channel')
-    if channel is None:
-        return {}
-
-    item = channel.get('item')
-    location = channel.get('location')
-    units = channel.get('units')
-    if (location is None) or (item is None) or (units is None):
-        return {}
-
-    condition = item.get('condition')
-    if condition is None:
-        return {}
-
-    # print(json.dumps(item, indent=4))
-
-    speech = "Today in " + location.get('city') + ": " \
-             ", the temperature is " + condition.get('temp') + " " + units.get('temperature')
-
-    print("Response:")
-    print(speech)
-
-    return {
-        "speech": speech,
-        "displayText": speech,
-        # "data": data,
-        # "contextOut": [],
-        "source": "virtual-patient-assistant"
-    }
-
-def makeWebhookDiagnosisResult(data):
-    result = data[0]
-    if result is None:
-        return {}
-
-    issue = result['Issue']
-    if issue is None:
-        return {}
-    print(issue)
-    name = result['Issue']['Name']
-    id = result['Issue']['ID']
-    if name is None:
-        return {}
-
-    diagnosis = result['Issue']['IcdName']
-    if diagnosis is None:
-        return {}
-
-    # print(json.dumps(item, indent=4))
-
-    speech = "You might be experiencing " + name + ". These are signs of " + diagnosis
-
-    print("Response:")
-    print(speech)
-
-    return {
-        "speech": speech,
-        "displayText": speech,
-        # "data": data,
-        "contextOut": [{"name":"identifydisease-followup", "lifespan":5, "parameters":{"issue":id}}],
-        "source": "virtual-patient-assistant"
-    }
-
-def makeWebhookInfoResult(data):
-    description = data['Description']
-    if description is None:
-        return {}
-    #print(description)
-    #name = result['Issue']['Name']
-    #id = result['Issue']['ID']
-    #if name is None:
-    # return {}
-
-    #diagnosis = result['Issue']['IcdName']
-    #if diagnosis is None:
-    #    return {}
-
-    # print(json.dumps(item, indent=4))
-
-    #speech = "You might be experiencing " + name + ". These are signs of " + diagnosis
-
-    #print("Response:")
-    #print(description)
-
-    return {
-        "speech": description,
-        "displayText": description,
-        # "data": data,
-        #"contextOut": [{"name":"identifydisease-followup", "lifespan":5, "parameters":{"issue":id}}],
-        "source": "virtual-patient-assistant"
-    }
-
-def makeWebhookDiseaseResult(data):
-    description = data['PossibleSymptoms']
-    if description is None:
-        return {}
-    #print(description)
-    #name = result['Issue']['Name']
-    #id = result['Issue']['ID']
-    #if name is None:
-    # return {}
-
-    #diagnosis = result['Issue']['IcdName']
-    #if diagnosis is None:
-    #    return {}
-
-    # print(json.dumps(item, indent=4))
-
-    speech = "Probable symptoms are " + description
-
-    #print("Response:")
-    #print(description)
-
-    return {
-        "speech": speech,
-        "displayText": speech,
-        # "data": data,
-        #"contextOut": [{"name":"identifydisease-followup", "lifespan":5, "parameters":{"issue":id}}],
-        "source": "virtual-patient-assistant"
-    }
 
 
-def makeWebhookDoctorResult(data):
-    result = data.get('data')
-    if result is None:
-        return {}
-    #print(json.dumps(result, indent=4))
-
-    docList = result[0]
-    if docList is None:
-        return {}
-
-    #print(json.dumps(docList, indent=4))
-    practices = docList['practices'][0]
-    if practices is None:
-        return {}
-    #print(json.dumps(practices, indent=4))
-
-    name = practices['name']
-  #  print(json.dumps(name, indent=4))
-
-    visit_address = practices['visit_address']['city']
-   # print(json.dumps(visit_address, indent=4))
-
-    phones = practices['phones'][0]['number']
-
-   # print(json.dumps(phones, indent=4))
-
-    speech = "Please visit Dr. " + name + ". The clinic is located in " + visit_address + ". For further details, contact him at " + phones + ". Do you want to schedule an appointment?"
-
-    print("Response:")
-    print(speech)
-
-    return {
-        "speech": speech,
-        "displayText": speech,
-        # "data": data,
-        "contextOut": [{"name":"identifydoctor-followup", "lifespan":5, "parameters":{"doctor":name}}],
-        "source": "virtual-patient-assistant"
-    }
 
 if __name__ == '__main__':
 
+    # from os import sys, path
+    # sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+    # port = int(os.getenv('PORT', 5000))
+    #
+    # print("Starting app on port %d" % port)
+    #
+    # app.run(debug=True, port=port, host='0.0.0.0')
+    database = Database.Database()
+    database.load("cognitiveSQL/database/HCM.sql")
+    database.print_me()
+
+    config = LangConfig.LangConfig()
+    config.load("cognitiveSQL/lang/english.csv")
+
+    parser = Parser.Parser(database, config)
     from os import sys, path
     sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-    port = int(os.getenv('PORT', 5000))
+    port = int(os.getenv('PORT', 5001))
 
     print("Starting app on port %d" % port)
 
     app.run(debug=True, port=port, host='0.0.0.0')
+    socketio.run(app, debug=True, port=port, host='0.0.0.0')
