@@ -106,7 +106,10 @@ def processRequest(req):
             queryString = queryString + str(query)
         print("table:")
         print(table)
-        print(list(columns))
+        #print(list(columns))
+        print(columns)
+        print(columns[0])
+        #print(columns[1])
         # xAxis = columns[0][0].split('.')[1]
         # yAxis = columns[1][0].split('.')[1]
         print(queryString)
@@ -134,86 +137,99 @@ def processRequest(req):
                         whereValue.append("min")
         outText = "The "
         # if len(rows)==1:
-        for row in rows:
-            isLast = len(row)
-            for element in row:
-                isLast = isLast - 1
-                value = str(element).split(".")[0]
-                if (columns[count][0] is not None):
-                    # print(columns)
-                    column = columns[count][0].split('.')[1]
-                operation = columns[count][1]
-                if (operation is None):
-                    print("The Operation is None")
-                    column = OutMap.get(column)
-                    whereValue1 = OutMap.get(whereValue[0]) if (OutMap.get(whereValue[0])) else whereValue[0]
-                    whereColumn1 = OutMap.get(whereColumn[0]) if (OutMap.get(whereColumn[0])) else whereColumn[0]
-                    try:
-                        print(whereValue[1])
-                        print(whereColumn[1])
-                        whereValue2 = OutMap.get(whereValue[1]) if (OutMap.get(whereValue[1])) else whereValue[1]
-                        whereColumn2 = OutMap.get(whereColumn[1]) if (OutMap.get(whereColumn[1])) else whereColumn[1]
-                        if 'whereColumn' in locals():
-                            # outText = str(column) + " " + value + " in the " + str(whereColumn1) + " " + str(
-                            #     whereValue1) + " has " + str(whereValue2) + " " + str(whereColumn2)
-                            outText = "The " + str(column) + " for " + str(whereColumn1) + " " + str(whereValue1)+ " in " + str(whereColumn2) + " is " + value + "%"
-                        else:
-                            outText = outText + str(column) + " is " + value
+        print("length of rows")
+        print(len(rows))
+        print(rows)
 
-                    except IndexError:
-                        if 'whereColumn' in locals():
-                            outText = str(column) + " " + value + " has " + str(whereValue1) + " " + str(whereColumn1)
-                        else:
-                            outText = outText + str(column) + " is " + value
 
-                elif (operation is "COUNT"):
-                    table = OutMap.get(table)
-                    print("The Operation is " + str(operation))
-                    if 'whereColumn' in locals():
-                        outText = "There are " + value + " " + str(table) + " with " + str(
-                            whereValue[0]) + " " + str(whereColumn[0])
+
+        if len(rows) == 1:
+            for row in rows:
+                print(count)
+                isLast = len(row)
+                for element in row:
+                    isLast = isLast - 1
+                    value = str(element).split(".")[0]
+
+                    if (columns[count][0] is not None):
+                        # print(columns)
+                        column = columns[count][0].split('.')[1]
+                        print(column)
+                    operation = columns[count][1]
+
+                    if (operation is None):
+                        print("The Operation is None")
+                        column = OutMap.get(column)
+                        whereValue1 = OutMap.get(whereValue[0]) if (OutMap.get(whereValue[0])) else whereValue[0]
+                        whereColumn1 = OutMap.get(whereColumn[0]) if (OutMap.get(whereColumn[0])) else whereColumn[0]
+                        try:
+                            print(whereValue[1])
+                            print(whereColumn[1])
+                            whereValue2 = OutMap.get(whereValue[1]) if (OutMap.get(whereValue[1])) else whereValue[1]
+                            whereColumn2 = OutMap.get(whereColumn[1]) if (OutMap.get(whereColumn[1])) else whereColumn[1]
+                            if 'whereColumn' in locals():
+                                # outText = str(column) + " " + value + " in the " + str(whereColumn1) + " " + str(
+                                #     whereValue1) + " has " + str(whereValue2) + " " + str(whereColumn2)
+                                outText = "The " + str(column) + " for " + str(whereColumn1) + " " + str(whereValue1)+ " in " + str(whereColumn2) + " is " + value + "%"
+                            else:
+                                outText = outText + str(column) + " is " + value
+
+                        except IndexError:
+                            if 'whereColumn' in locals():
+                                outText = str(column) + " " + value + " has " + str(whereValue1) + " " + str(whereColumn1)
+                            else:
+                                outText = outText + str(column) + " is " + value
+
+                    elif (operation is "COUNT"):
+                        table = OutMap.get(table)
+                        print("The Operation is " + str(operation))
+                        if 'whereColumn' in locals():
+                            outText = "There are " + value + " " + str(table) + " with " + str(
+                                whereValue[0]) + " " + str(whereColumn[0])
+                        else:
+                            outText = "There are " + value + " " + str(table)
                     else:
-                        outText = "There are " + value + " " + str(table)
-                else:
-                    # operation = OutMap.get(str(operation).lower())
-                    column = OutMap.get(column)
-                    # whereValue = OutMap.get(whereValue)
-                    print("The Operation is " + str(operation))
-                    if 'whereColumn' in locals():
-                        outText = "There are " + value + " " + str(column) + " with " + str(
-                            whereValue[0]) + " for " + str(whereValue[1]) + " " + str(whereColumn[1])
-                    else:
-                        if "what" in incoming_query:
-                            outText = "The " + OutMap.get(str(operation).lower()).lower() + " " + str(
-                                column) + " is " + value
-                        elif "how" in incoming_query:
-                            outText = "There are " + value + " " + str(column)
-                if (isLast is not 0):
-                    outText = outText + " and the "
-                    count = count + 1
+                        # operation = OutMap.get(str(operation).lower())
+                        column = OutMap.get(column)
+                        # whereValue = OutMap.get(whereValue)
+                        print("The Operation is " + str(operation))
+                        if 'whereColumn' in locals():
+                            outText = "There are " + value + " " + str(column) + " in " + str(
+                                whereValue[0]) + " for " + str(whereValue[1]) + " " + str(whereColumn[1])
+                        else:
+                            if "what" in incoming_query:
+                                outText = "The " + OutMap.get(str(operation).lower()).lower() + " " + str(
+                                    column) + " is " + value
+                            elif "how" in incoming_query:
+                                outText = "There are " + value + " " + str(column)
+
+                    if (isLast is not 0):
+                        outText = outText + " and the "
+                        count = count + 1
+
+        else:
+            print(whereColumn)
+            print(whereValue)
+            print(table)
+            print(columns[1][0])
+            column = columns[0][0].split('.')[1]
+            column2 = columns[1][0].split('.')[1]
+            sent_label=OutMap[column]
+            sent_value=OutMap[column2]
+
+            print(sent_label)
+            outText=whereColumn[0]+ " " + OutMap[whereValue[0]] + " has the following " + sent_label + ":"
+            print(rows)
+            print(columns)
+            print(len(columns))
+
+            for row in rows:
+                label=row[0]
+                value=row[1]
+                outText = outText + str(column) + " " + str(label) + " has " + str(column2)+ " " + str(value) + ", "
+
+            #outText = "The"
         print(outText)
-        # for row in rows:
-        #     isLast = len(row)
-        #     for element in row:
-        #         isLast = isLast - 1
-        #         value = str(element).split(".")[0]
-        #         if (columns[count][0] is not None):
-        #             # print(columns)
-        #             column = columns[count][0].split('.')[1]
-        #         operation = columns[count][1]
-        #         if (operation is None):
-        #             print("The Operation is None")
-        #             outText = outText + column + " is " + value
-        #         elif (operation is "COUNT"):
-        #             print("The Operation is " + str(operation))
-        #             outText = outText + operation + " of " + table + " is " + value
-        #         else:
-        #             print("The Operation is " + str(operation))
-        #             outText = outText + operation + " of " + column + " is " + value
-        #         if (isLast is not 0):
-        #             outText = outText + " and the "
-        #             count = count + 1
-        # print(','.join(str(element) for row in rows for element in row))
 
         return {
             "speech": outText,
@@ -224,14 +240,15 @@ def processRequest(req):
         }
     elif (req.get("result").get("action") == "medical.visualization"):
         print("Medical Visualization")
-        chartType = "line"
+        #chartType = "line"
         incoming_query = req.get("result").get("resolvedQuery")
         print(incoming_query)
         chartType = req.get("result").get("parameters").get("chart-type")
-        if (chartType == "bar"):
-            chartType = "column2d"
-        else:
-            chartType = "line"
+        # if (chartType == "bar"):
+        #     chartType = "bar"
+        # else:
+        #     chartType = "line"
+
         hashColumn_csv = 'cognitiveSQL/alias/synonyms.csv'
         OutMap={}
         (input_sentence, OutMap) = hashMap_columns(str(incoming_query).lower(), hashColumn_csv, OutMap)
@@ -272,11 +289,20 @@ def processRequest(req):
         minRecord = agg_df.ix[agg_df['value'].idxmin()].to_frame().T
         agg_df['label'] = agg_df['label'].astype('str')
         agg_df['value'] = agg_df['value'].astype('str')
+
+        agg_df.drop(columns=['index'], inplace=True)
+        agg_df.reset_index(drop=True, inplace=True)
+
         chartData = agg_df.to_json(orient='records')
         # chartData = [{"label": str(row[0]), "value": str(row[1])} for row in rows]
+        print("agg_df:")
+        print(agg_df)
+        print("chartData:")
         print(chartData)
         # chartData = json.dumps(chartData)
-        final_json = '[ { "type":"' + chartType + '", "chartcontainer":"barchart", "caption":"' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"xAxis", "yAxisName":"yAxis","source":[ { "label": "Mon", "value": "15123" }, { "label": "Tue", "value": "14233" }, { "label": "Wed", "value": "23507" }, { "label": "Thu", "value": "9110" }, { "label": "Fri", "value": "15529" }, { "label": "Sat", "value": "20803" }, { "label": "Sun", "value": "19202" } ]}]'
+        #final_json = '[ { "type":"' + chartType + '", "chartcontainer":"barchart", "caption":"' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"xAxis", "yAxisName":"yAxis","source":[ { "label": "Mon", "value": "15123" }, { "label": "Tue", "value": "14233" }, { "label": "Wed", "value": "23507" }, { "label": "Thu", "value": "9110" }, { "label": "Fri", "value": "15529" }, { "label": "Sat", "value": "20803" }, { "label": "Sun", "value": "19202" } ]}]'
+        final_json = '[ { "type":"' + chartType + '", "chartcontainer":"barchart", "caption":"A ' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"' + xAxis + '", "yAxisName":"' + yAxis + '", "source":' + chartData + '}]'
+
         # if chartType == "column2d":
         # final_json = '[ { "type":"' + chartType + '", "chartcontainer":"barchart", "caption":"A ' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"' + xAxis + '", "yAxisName":"' + yAxis + '", "source":' + chartData + '}]'
         # elif chartType == "line":
@@ -284,7 +310,7 @@ def processRequest(req):
 
         print(final_json)
 
-        socketio.emit('chartdata', final_json)
+        socketio.emit('chartgoogledata', final_json)
         outText = "The " + xAxis + " " + str(
             maxRecord['label'].values[0]) + " has maximum " + yAxis + " while the " + xAxis + " " + str(
             minRecord['label'].values[0]) + " has minimum " + yAxis + ". Refer to the screen for more details."
@@ -324,5 +350,5 @@ if __name__ == '__main__':
 
     print("Starting app on port %d" % port)
 
-    app.run(debug=True, port=port, host='0.0.0.0')
+    #app.run(debug=True, port=port, host='0.0.0.0')
     socketio.run(app, debug=True, port=port, host='0.0.0.0')

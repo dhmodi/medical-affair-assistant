@@ -12,7 +12,7 @@ WITH (
 CREATE TABLE `known_issues`` (
 	`datatype` varchar NULL,
 	`country` varchar NULL,
-	`Dimension` varchar NULL,
+	`dim` varchar NULL,
 	`quality_check` varchar NULL,
 	`fail_count` integer NULL
 )
