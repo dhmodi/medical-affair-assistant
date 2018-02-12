@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="2172a02b-bc71-424f-b2cc-fb2260de4599" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app.py" afterPath="$PROJECT_DIR$/app.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,15 +12,15 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/medical_affair_assistant$app.coverage" NAME="app Coverage Results" MODIFIED="1518189061114" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/medical_affair_assistant$app.coverage" NAME="app Coverage Results" MODIFIED="1518266333975" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
       <file leaf-file-name="app.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="203" column="44" lean-forward="true" selection-start-line="203" selection-start-column="44" selection-end-line="203" selection-end-column="44" />
+            <state relative-caret-position="354">
+              <caret line="141" column="49" lean-forward="true" selection-start-line="141" selection-start-column="49" selection-end-line="141" selection-end-column="49" />
               <folding>
                 <marker date="1518188972991" expanded="true" signature="1235:1289" ph="select resp_... inquiry_response" />
                 <marker date="1518188972991" expanded="true" signature="1235:1310" ph="select resp_... inquiry_response" />
@@ -303,7 +302,14 @@
       <option name="project" value="LOCAL" />
       <updated>1518083371424</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added all the changes which we discussed on friday 9th feb 2018&#10;1. Added additional condition for black response&#10;2. Added customized response for &quot;was this information is useful&quot;">
+      <created>1518189690169</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1518189690169</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -341,7 +347,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Testing Commit" />
     <MESSAGE value="Added all the changes in this commit for Medical affir" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added all the changes in this commit for Medical affir" />
+    <MESSAGE value="Added all the changes which we discussed on friday 9th feb 2018&#10;1. Added additional condition for black response&#10;2. Added customized response for &quot;was this information is useful&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added all the changes which we discussed on friday 9th feb 2018&#10;1. Added additional condition for black response&#10;2. Added customized response for &quot;was this information is useful&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -612,8 +619,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="203" column="44" lean-forward="true" selection-start-line="203" selection-start-column="44" selection-end-line="203" selection-end-column="44" />
+        <state relative-caret-position="354">
+          <caret line="141" column="49" lean-forward="true" selection-start-line="141" selection-start-column="49" selection-end-line="141" selection-end-column="49" />
           <folding>
             <marker date="1518188972991" expanded="true" signature="1235:1289" ph="select resp_... inquiry_response" />
             <marker date="1518188972991" expanded="true" signature="1235:1310" ph="select resp_... inquiry_response" />
