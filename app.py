@@ -146,20 +146,29 @@ def processRequest(req):
                     Prod_Response = select_inquiry_response(req.get("result").get("parameters").get("ProductName"),"Apperance")
                     if Prod_Response != None:
                         status = True;
-                        fac_unfac = 'Facilitated'
+                        if len(Prod_Response[0]) > 0:
+                            fac_unfac = 'Facilitated'
+                            response = Prod_Response[0] + "Was this information useful?"
+                        else:
+                            fac_unfac = 'UnFacilitated'
+                            response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
                         master_prod = 'Product Appearance'
-                        response = Prod_Response[0]
+                        # response = Prod_Response[0]
                     else:
-                        status = False;
+                        status = False
                         fac_unfac = 'Unfacilitated'
                 elif (req.get("result").get("action") == "ProdAvailability"):
                     print("ProdAvailability")
                     Prod_Response = select_inquiry_response(req.get("result").get("parameters").get("ProductName"),"Availability")
                     if Prod_Response != None:
                         status = True;
-                        fac_unfac = 'Facilitated'
+                        if len(Prod_Response[0]) > 0:
+                            fac_unfac = 'Facilitated'
+                            response = Prod_Response[0] + "Was this information useful?"
+                        else:
+                            fac_unfac = 'UnFacilitated'
+                            response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
                         master_prod = 'Product Availability'
-                        response = Prod_Response[0]
                     else:
                         status = False;
                         fac_unfac = 'Unfacilitated'
@@ -167,16 +176,20 @@ def processRequest(req):
                     print("ProdGenericAvailable")
                     Prod_Response = select_inquiry_response(req.get("result").get("parameters").get("ProductName"),"Generic_Availables")
                     if Prod_Response != None:
-                        status = True;
-                        fac_unfac = 'Facilitated'
+                        status = True
+                        if len(Prod_Response[0]) > 0:
+                            fac_unfac = 'Facilitated'
+                            response = Prod_Response[0] + "Was this information useful?"
+                        else:
+                            fac_unfac = 'UnFacilitated'
+                            response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
                         master_prod = 'Product Generic Availability'
-                        response = Prod_Response[0]
                     else:
-                        status = False;
+                        status = False
                         fac_unfac = 'Unfacilitated'
-                    #Default else
+                        #Default else
                 else:
-                    status =False;
+                    status =False
 
         # final if Statement
             if status:
