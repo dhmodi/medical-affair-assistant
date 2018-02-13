@@ -274,58 +274,144 @@ def processRequest(req):
         rows = cur.fetchall()
         print(rows)
         print(list(columns))
-        xAxis = columns[0][0].split('.')[1]
-        yAxis = columns[1][0].split('.')[1]
-        xAxis = OutMap.get(xAxis) if OutMap.get(xAxis) else xAxis
-        yAxis = OutMap.get(yAxis) if OutMap.get(yAxis) else yAxis
-        print(xAxis)
-        print(yAxis)
-        print(chartType)
-        df = pd.DataFrame(list(rows), columns=["label", "value"])
-        df['value'] = df['value'].fillna(0)
-        agg_df = df.groupby(['label'], as_index=False).agg({"value": "sum"})
-        maxRecord = agg_df.ix[agg_df['value'].idxmax()].to_frame().T
-        agg_df = agg_df.reset_index()
-        minRecord = agg_df.ix[agg_df['value'].idxmin()].to_frame().T
-        agg_df['label'] = agg_df['label'].astype('str')
-        agg_df['value'] = agg_df['value'].astype('str')
 
-        agg_df.drop(columns=['index'], inplace=True)
-        agg_df.reset_index(drop=True, inplace=True)
-
-        chartData = agg_df.to_json(orient='records')
-        # chartData = [{"label": str(row[0]), "value": str(row[1])} for row in rows]
-        print("agg_df:")
-        print(agg_df)
-        print("chartData:")
-        print(chartData)
-        # chartData = json.dumps(chartData)
-        #final_json = '[ { "type":"' + chartType + '", "chartcontainer":"barchart", "caption":"' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"xAxis", "yAxisName":"yAxis","source":[ { "label": "Mon", "value": "15123" }, { "label": "Tue", "value": "14233" }, { "label": "Wed", "value": "23507" }, { "label": "Thu", "value": "9110" }, { "label": "Fri", "value": "15529" }, { "label": "Sat", "value": "20803" }, { "label": "Sun", "value": "19202" } ]}]'
-        final_json = '[ { "type":"' + chartType + '", "chartcontainer":"barchart", "caption":"A ' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"' + xAxis + '", "yAxisName":"' + yAxis + '", "source":' + chartData + '}]'
-
-        # if chartType == "column2d":
-        # final_json = '[ { "type":"' + chartType + '", "chartcontainer":"barchart", "caption":"A ' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"' + xAxis + '", "yAxisName":"' + yAxis + '", "source":' + chartData + '}]'
-        # elif chartType == "line":
-        # final_json = '[ { "type":"' + chartType + '", "chartcontainer":"linechart", "caption":"A ' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"' + xAxis + '", "yAxisName":"' + yAxis + '", "source":' + chartData + '}]'
-
-        print(final_json)
-
-        socketio.emit('chartgoogledata', final_json)
-        outText = "The " + xAxis + " " + str(
-            maxRecord['label'].values[0]) + " has maximum " + yAxis + " while the " + xAxis + " " + str(
-            minRecord['label'].values[0]) + " has minimum " + yAxis + ". Refer to the screen for more details."
-        # outText = "Refer to the screen for more details."
-        print(outText)
-        return {
-            "speech": outText,
-            "displayText": outText,
-            # "data": data,
-            # "contextOut": [],
-            "source": "Dhaval"
-        }
+        if len(columns) <= 2:
+            xAxis = columns[0][0].split('.')[1]
+            yAxis = columns[1][0].split('.')[1]
+            xAxis = OutMap.get(xAxis) if OutMap.get(xAxis) else xAxis
+            yAxis = OutMap.get(yAxis) if OutMap.get(yAxis) else yAxis
+            print(xAxis)
+            print(yAxis)
+            print(chartType)
+            df = pd.DataFrame(list(rows), columns=["label", "value"])
+            df['value'] = df['value'].fillna(0)
+            agg_df = df.groupby(['label'], as_index=False).agg({"value": "sum"})
+            maxRecord = agg_df.ix[agg_df['value'].idxmax()].to_frame().T
+            agg_df = agg_df.reset_index()
+            minRecord = agg_df.ix[agg_df['value'].idxmin()].to_frame().T
+            agg_df['label'] = agg_df['label'].astype('str')
+            agg_df['value'] = agg_df['value'].astype('str')
 
 
 
+            agg_df.drop(columns=['index'], inplace=True)
+            agg_df.reset_index(drop=True, inplace=True)
+            print("agg_df:")
+            print(agg_df)
+
+            if chartType == 'geochart':
+                for id,cn in enumerate(agg_df['label']):
+                    if cn == 'UK':
+                        agg_df['label'][id] = 'GB'
+
+            chartData = agg_df.to_json(orient='records')
+            # chartData = [{"label": str(row[0]), "value": str(row[1])} for row in rows]
+            print("agg_df:")
+            print(agg_df)
+            print("chartData:")
+            print(chartData)
+            # chartData = json.dumps(chartData)
+            #final_json = '[ { "type":"' + chartType + '", "chartcontainer":"barchart", "caption":"' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"xAxis", "yAxisName":"yAxis","source":[ { "label": "Mon", "value": "15123" }, { "label": "Tue", "value": "14233" }, { "label": "Wed", "value": "23507" }, { "label": "Thu", "value": "9110" }, { "label": "Fri", "value": "15529" }, { "label": "Sat", "value": "20803" }, { "label": "Sun", "value": "19202" } ]}]'
+            final_json = '[ { "type":"' + chartType + '", "chartcontainer":"barchart", "caption":"A ' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"' + xAxis + '", "yAxisName":"' + yAxis + '", "source":' + chartData + '}]'
+
+
+            print(final_json)
+
+            socketio.emit('chartgoogledata', final_json)
+            outText = "The " + xAxis + " " + str(
+                maxRecord['label'].values[0]) + " has maximum " + yAxis + " while the " + xAxis + " " + str(
+                minRecord['label'].values[0]) + " has minimum " + yAxis + ". Refer to the screen for more details."
+            # outText = "Refer to the screen for more details."
+            print(outText)
+            return {
+                "speech": outText,
+                "displayText": outText,
+                # "data": data,
+                # "contextOut": [],
+                "source": "Dhaval"
+            }
+
+        else:
+            xAxis = columns[0][0].split('.')[1]
+            yAxis = columns[1][0].split('.')[1]
+            zAxis = columns[2][0].split('.')[1]
+            xAxis = OutMap.get(xAxis) if OutMap.get(xAxis) else xAxis
+            yAxis = OutMap.get(yAxis) if OutMap.get(yAxis) else yAxis
+            zAxis = OutMap.get(zAxis) if OutMap.get(zAxis) else zAxis
+
+            print(xAxis)
+            print(yAxis)
+            print(zAxis)
+            print(chartType)
+
+            df = pd.DataFrame(list(rows), columns=["datatype", "country", "dq_score"])
+            df['dq_score'] = df['dq_score'].fillna(0)
+            #print(df)
+
+            agg_df = df.groupby(['datatype','country'], as_index=False)['dq_score'].sum()
+            print(agg_df)
+
+            maxRecord = agg_df.ix[agg_df['dq_score'].idxmax()].to_frame().T
+            agg_df = agg_df.reset_index()
+            minRecord = agg_df.ix[agg_df['dq_score'].idxmin()].to_frame().T
+            print(maxRecord)
+            print(minRecord)
+            agg_df['datatype'] = agg_df['datatype'].astype('str')
+            agg_df['country'] = agg_df['country'].astype('str')
+            agg_df.drop(columns=['index'], inplace=True)
+            #agg_df.reset_index(drop=True, inplace=True)
+            print("agg_df:")
+            print(agg_df)
+
+            unique_labels=set(agg_df['country'])
+            unique_labels=list(unique_labels)
+
+            df=agg_df
+            df2 = pd.DataFrame(columns=['country', 'values'])
+            df2['country'] = ['' for i in range(len(unique_labels))]
+
+            for idx, cn in enumerate(unique_labels):
+                df2['country'][idx] = cn
+                df2['values'][idx] = {}
+
+            for ind, cn in enumerate(df['country']):
+                for i, c in enumerate(df2['country']):
+                    dat = df['datatype'][ind]
+                    dqs = df['dq_score'][ind]
+                    if cn == c:
+                        df2['values'][i][dat] = dqs
+
+
+            print(df2)
+
+            agg_df = df2
+
+            chartData = agg_df.to_json(orient='records')
+            # chartData = [{"label": str(row[0]), "value": str(row[1])} for row in rows]
+            print("agg_df:")
+            print(agg_df)
+            print("chartData:")
+            print(chartData)
+            # chartData = json.dumps(chartData)
+            #final_json = '[ { "type":"' + chartType + '", "chartcontainer":"barchart", "caption":"' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"xAxis", "yAxisName":"yAxis","source":[ { "label": "Mon", "value": "15123" }, { "label": "Tue", "value": "14233" }, { "label": "Wed", "value": "23507" }, { "label": "Thu", "value": "9110" }, { "label": "Fri", "value": "15529" }, { "label": "Sat", "value": "20803" }, { "label": "Sun", "value": "19202" } ]}]'
+            final_json = '[ { "type":"' + chartType + '", "chartcontainer":"barchart", "caption":"A ' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"' + xAxis + '", "yAxisName":"' + yAxis + '", "source":' + chartData + '}]'
+
+
+            print(final_json)
+
+            socketio.emit('chartgoogledata', final_json)
+            # outText = "The " + xAxis + " " + str(
+            #     maxRecord['label'].values[0]) + " has maximum " + yAxis + " while the " + xAxis + " " + str(
+            #     minRecord['label'].values[0]) + " has minimum " + yAxis + ". Refer to the screen for more details."
+            outText = "Refer to the screen for more details."
+            print(outText)
+            return {
+                "speech": outText,
+                "displayText": outText,
+                # "data": data,
+                # "contextOut": [],
+                "source": "Dhaval"
+            }
 
 if __name__ == '__main__':
 

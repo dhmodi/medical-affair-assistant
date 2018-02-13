@@ -301,48 +301,48 @@ $(document).ready(function() {
 
         function CreateGeoChart(data) {
             var chartdatum = data;
-            var source = [
-      {
-        "label": "BG",
-        "value": "1"
-      },
-	   {
-        "label": "ES",
-        "value": "3"
-      },
-	  {
-        "label": "FR",
-        "value": "1"
-      },
-	  {
-        "label": "GR",
-        "value": "1"
-      },
-	  {
-        "label": "KR",
-        "value": "3"
-      },
-	  {
-        "label": "JP",
-        "value": "3"
-      },
-      {
-        "label": "US",
-        "value": "8"
-      }
-];
+//            var source = [
+//      {
+//        "label": "BG",
+//        "value": "1"
+//      },
+//	   {
+//        "label": "ES",
+//        "value": "3"
+//      },
+//	  {
+//        "label": "FR",
+//        "value": "1"
+//      },
+//	  {
+//        "label": "GR",
+//        "value": "1"
+//      },
+//	  {
+//        "label": "KR",
+//        "value": "3"
+//      },
+//	  {
+//        "label": "JP",
+//        "value": "3"
+//      },
+//      {
+//        "label": "US",
+//        "value": "8"
+//      }
+//];
             var result = [];
             //Need proper handling
-            /*result.push(Object.keys(chartdatum.source[0]));
+            result.push(Object.keys(chartdatum.source[0]));
             for (var i in chartdatum.source) {
                 chartdatum.source[i].value = parseFloat(chartdatum.source[i].value);
                 result.push(Object.values(chartdatum.source[i]));
-            }*/
-            result.push(Object.keys(source[0]));
-            for (var i in source) {
-                source[i].value = parseFloat(source[i].value);
-                result.push(Object.values(source[i]));
             }
+            //result.push(Object.keys(source[0]));
+//            for (var i in source) {
+//                source[i].value = parseFloat(source[i].value);
+//                result.push(Object.values(source[i]));
+//            }
             google.charts.load('current', {
                 'packages': ['geochart'],
                 'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
