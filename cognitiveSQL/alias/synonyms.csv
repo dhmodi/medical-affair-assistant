@@ -1,0 +1,14 @@
+sum,total number,how many
+min,minimum,lowest,low,least
+max,maximum,max,highest,high,more
+datatype trend dq_score,dq trend,dq trending
+dim fail_count known_issues,known issues
+score dq_score,dq score
+datatype,data type
+country,countries
+country uk,uk
+country fr,france
+country ita,italy
+country de,germany
+country es,spain
+fail_count known_issues,total issues

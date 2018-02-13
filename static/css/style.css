@@ -180,3 +180,5 @@ h5 a:hover{
 .btncolour:hover{
   background-color:#03a9f4; 
 } */
+
+#chartshow{ display:none; }
