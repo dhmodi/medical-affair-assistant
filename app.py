@@ -363,16 +363,23 @@ def processRequest(req):
             print("agg_df:")
             print(agg_df)
 
-            unique_labels=set(agg_df['country'])
-            unique_labels=list(unique_labels)
+            unique_countries = set(agg_df['country'])
+            unique_countries = list(unique_countries)
 
-            df=agg_df
+            unique_datatypes = set(df['datatype'])
+            unique_datatypes = list(unique_datatypes)
+
+            df = agg_df
             df2 = pd.DataFrame(columns=['country', 'values'])
-            df2['country'] = ['' for i in range(len(unique_labels))]
+            df2['country'] = ['' for i in range(len(unique_countries))]
 
-            for idx, cn in enumerate(unique_labels):
+            for idx, cn in enumerate(unique_countries):
                 df2['country'][idx] = cn
                 df2['values'][idx] = {}
+
+            for ind, val in enumerate(df2['values']):
+                for idx, dtyp in enumerate(unique_datatypes):
+                    df2['values'][ind][dtyp] = 0
 
             for ind, cn in enumerate(df['country']):
                 for i, c in enumerate(df2['country']):

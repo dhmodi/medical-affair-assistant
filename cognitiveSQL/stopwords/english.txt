@@ -766,7 +766,7 @@ or
 other
 ought
 our
-ours 
+ours
 ourselves
 out
 over
@@ -1996,7 +1996,6 @@ invention
 inward
 is
 isn't
-it
 itd
 it'll
 its
@@ -2679,11 +2678,10 @@ into
 inward
 is
 isn't
-it
 it'd
 it'll
 its
-it's
+f's
 itse”
 itself
 i've
