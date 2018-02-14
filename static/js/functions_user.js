@@ -197,16 +197,13 @@ $(document).ready(function() {
             } else if (val.type == "trend") {
                 CreateComboChart(val);
             }
-            $('#chartshow').show(true);
-            $('#chartshow')[0].scrollIntoView(true);
             status = true;
         });
 
         function CreateAreaChart(data) {
             var chartdatum = data;
               var result = [];
-            // result.push(Object.keys(chartdatum.source[0]));
-            result.push([chartdatum.xAxisName,chartdatum.yAxisName]);
+            result.push(Object.keys(chartdatum.source[0]));
                 for (var i in chartdatum.source) {
                     chartdatum.source[i].value = parseFloat(chartdatum.source[i].value);
                     result.push(Object.values(chartdatum.source[i]));
@@ -304,15 +301,48 @@ $(document).ready(function() {
 
         function CreateGeoChart(data) {
             var chartdatum = data;
-             var result = [];
+//            var source = [
+//      {
+//        "label": "BG",
+//        "value": "1"
+//      },
+//	   {
+//        "label": "ES",
+//        "value": "3"
+//      },
+//	  {
+//        "label": "FR",
+//        "value": "1"
+//      },
+//	  {
+//        "label": "GR",
+//        "value": "1"
+//      },
+//	  {
+//        "label": "KR",
+//        "value": "3"
+//      },
+//	  {
+//        "label": "JP",
+//        "value": "3"
+//      },
+//      {
+//        "label": "US",
+//        "value": "8"
+//      }
+//];
+            var result = [];
             //Need proper handling
-            //result.push(Object.keys(chartdatum.source[0]));
-            result.push([chartdatum.xAxisName,chartdatum.yAxisName]);
-
+            result.push(Object.keys(chartdatum.source[0]));
             for (var i in chartdatum.source) {
                 chartdatum.source[i].value = parseFloat(chartdatum.source[i].value);
                 result.push(Object.values(chartdatum.source[i]));
             }
+            //result.push(Object.keys(source[0]));
+//            for (var i in source) {
+//                source[i].value = parseFloat(source[i].value);
+//                result.push(Object.values(source[i]));
+//            }
             google.charts.load('current', {
                 'packages': ['geochart'],
                 'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
@@ -355,15 +385,20 @@ $(document).ready(function() {
         }
 
         function CreateLineChart(data) {
-            var chartdatum = data;
+            //var chartdatum = data;
             //  if(length == 1){
             // 	   width = 900;
             // 	   height= 500;
             //  }
+
+            //var chartdetail = JSON.parse(data)
+            //var data = jQuery.parseJSON(JSON.stringify(data))
+            console.log(data)
+            var chartdatum = data;
             var result = [];
-            // result.push(Object.keys(chartdatum.source[0]));
-            result.push([chartdatum.xAxisName,chartdatum.yAxisName]);
+            result.push(Object.keys(chartdatum.source[0]));
             console.log(Object.keys(chartdatum.source[0]));
+            //console.log(data)
             for (var i in chartdatum.source) {
                 chartdatum.source[i].value = parseFloat(chartdatum.source[i].value);
                 result.push(Object.values(chartdatum.source[i]));
@@ -385,6 +420,8 @@ $(document).ready(function() {
 
                 chart.draw(data, options);
             }
+
+
         }
 
          function CreateSankeyChart(data) {
@@ -424,8 +461,7 @@ $(document).ready(function() {
         function CreateColumnChart(data) {
             var chartdatum = data;
             var result = [];
-             //result.push(Object.keys(chartdatum.source[0]));
-             result.push([chartdatum.xAxisName,chartdatum.yAxisName]);
+              result.push(Object.keys(chartdatum.source[0]));
                 for (var i in chartdatum.source) {
                     chartdatum.source[i].value = parseFloat(chartdatum.source[i].value);
                     result.push(Object.values(chartdatum.source[i]));
@@ -440,7 +476,6 @@ $(document).ready(function() {
                     var chart = new google.visualization.ColumnChart(document.getElementById('barchart'));
                     chart.draw(data, options);
                 }
-
         }
 
         function CreateComboChart(data) {
@@ -486,12 +521,12 @@ $(document).ready(function() {
 
     var recognition;
     nlp = window.nlp_compromise;
-    var accessToken = "66ad5ee869a34d3593181c0f9ff0922c";
+    var accessToken = "ded191608e1146ec917fa35b83d7c829";
     var baseUrl = "https://api.dialogflow.com/v1/";
     var messages = [], //array that hold the record of each string in chat
         lastUserMessage = "", //keeps track of the most recent input string from the user
         botMessage = "", //var keeps track of what the chatbot is going to say
-        botName = 'Assistant'; //name of the chatbot
+        botName = 'HR Manager'; //name of the chatbot
 
     function startRecognition() {
       recognition = new webkitSpeechRecognition();

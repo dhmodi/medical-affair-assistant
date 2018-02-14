@@ -97,8 +97,8 @@ $(document).ready(function() {
     });
 
     //Socket io related code goes over here
-    var socket = io.connect('https://deloitte-screen.herokuapp.com');
-    // var socket = io.connect('http://localhost:5001');
+    // var socket = io.connect('https://deloitte-screen.herokuapp.com');
+    var socket = io.connect('http://localhost:5001');
     socket.on('chartdata', function(data) {
         var chartdetail = JSON.parse(data);
         var length = chartdetail.length;
