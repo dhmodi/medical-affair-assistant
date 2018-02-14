@@ -363,10 +363,17 @@ def processRequest(req):
             print("agg_df:")
             print(agg_df)
 
+            pd.options.mode.chained_assignment = None
+
+            for i in range(len(agg_df['datatype'])):
+                agg_df['datatype'][i] = agg_df['datatype'][i].replace(" ", "_")
+
+            print(agg_df)
+
             unique_countries = set(agg_df['country'])
             unique_countries = list(unique_countries)
 
-            unique_datatypes = set(df['datatype'])
+            unique_datatypes = set(agg_df['datatype'])
             unique_datatypes = list(unique_datatypes)
 
             df = agg_df
