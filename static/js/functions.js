@@ -310,12 +310,12 @@ $(document).ready(function() {
                 var j = 2;
                 result.push(Object.keys(chartdatum.source[0]));
                 result[0].push("size", "color");
-                result.push(["Global",null,0,0]);
+                result.push(["TreeMap",null,0,0]);
                     for (var i in chartdatum.source) {
                     chartdatum.source[i].value = parseFloat(chartdatum.source[i].value);
                     result.push(Object.values(chartdatum.source[i]));
                     result[parseInt(j)+parseInt(i)].push(chartdatum.source[i].value);
-                    result[parseInt(j)+parseInt(i)].splice( 1, 0, 'Global');
+                    result[parseInt(j)+parseInt(i)].splice( 1, 0, 'TreeMap');
                     }
             function drawChart() {
             var data = google.visualization.arrayToDataTable(result);
@@ -328,7 +328,12 @@ $(document).ready(function() {
 
                 ]);*/
                 var chart = new google.visualization.TreeMap(document.getElementById('barchart'));
-               chart.draw(data,options);
+                options. minColor = '#f00';
+                options.midColor = '#ddd';
+                options.maxColor = '#0d0';
+                options.fontColor = 'black';
+                options.showScale = true;
+                chart.draw(data,options);
                 }
         }
 
@@ -431,25 +436,37 @@ $(document).ready(function() {
 
         function CreateLineChart(data) {
         var chartdatum = data;
+         var result = [];
         var source1 = chartdatum.source;
         google.charts.load('current', {
         'packages': ['corechart']
     });
          google.charts.setOnLoadCallback(drawChart);
 
-                   var result = [];
+                 if((typeof source1[0].values) == 'object'){
+                  // var result = [];
                    final_json =[];
                    var new_key = Object.keys(chartdatum.source[0].values);
                    new_key.sort();
                    new_key.unshift("country");
-                   final_json.push(new_key);
+                   result.push(new_key);
                    source1.forEach(function(Object){
-                   final_json.push([Object.country,parseFloat(Object.values.Customer_MDM),parseFloat(Object.values.Email),parseFloat(Object.values.RDM),parseFloat(Object.values['Web/Clickstream/Portal'])]);
+                   result.push([Object.country,parseFloat(Object.values.Customer_MDM),parseFloat(Object.values.Email),parseFloat(Object.values.RDM),parseFloat(Object.values['Web/Clickstream/Portal'])]);
 
                    });
-                console.log(final_json);
+                   }
+                   else
+        {
+
+             result.push(Object.keys(chartdatum.source[0]));
+           for (var i in chartdatum.source) {
+                chartdatum.source[i].value = parseFloat(chartdatum.source[i].value);
+              result.push(Object.values(chartdatum.source[i]));
+            }
+        }
+
         function drawChart() {
-        var data = google.visualization.arrayToDataTable(final_json);
+        var data = google.visualization.arrayToDataTable(result);
             var chart = new google.visualization.LineChart(document.getElementById('barchart'));
             chart.draw(data, options);
         }
