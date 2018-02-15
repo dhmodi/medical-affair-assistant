@@ -256,81 +256,85 @@ $(document).ready(function() {
         }
 
 
+//        function CreateTreeChart(data) {
+//            var chartdatum = data;
+//                google.charts.load('current', {
+//                'packages': ['treemap']
+//            });
+//            google.charts.setOnLoadCallback(drawChart);
+//            function drawChart() {
+//                var data = google.visualization.arrayToDataTable([
+//                  ['Location', 'Parent', 'Market trade volume (size)', 'Market increase/decrease (color)'],
+//                  ['Global',    null,                 0,                               0],
+//                  ['America',   'Global',             0,                               0],
+//                  ['Europe',    'Global',             0,                               0],
+//                  ['Asia',      'Global',             0,                               0],
+//                  ['Australia', 'Global',             0,                               0],
+//                  ['Africa',    'Global',             0,                               0],
+//                  ['Brazil',    'America',            11,                              10],
+//                  ['USA',       'America',            52,                              31],
+//                  ['Mexico',    'America',            24,                              12],
+//                  ['Canada',    'America',            16,                              -23],
+//                  ['France',    'Europe',             42,                              -11],
+//                  ['Germany',   'Europe',             31,                              -2],
+//                  ['Sweden',    'Europe',             22,                              -13],
+//                  ['Italy',     'Europe',             17,                              4],
+//                  ['UK',        'Europe',             21,                              -5],
+//                  ['China',     'Asia',               36,                              4],
+//                  ['Japan',     'Asia',               20,                              -12],
+//                  ['India',     'Asia',               40,                              63],
+//                  ['Laos',      'Asia',               4,                               34],
+//                  ['Mongolia',  'Asia',               1,                               -5],
+//                  ['Israel',    'Asia',               12,                              24],
+//                  ['Iran',      'Asia',               18,                              13],
+//                  ['Pakistan',  'Asia',               11,                              -52],
+//                  ['Egypt',     'Africa',             21,                              0],
+//                  ['S. Africa', 'Africa',             30,                              43],
+//                  ['Sudan',     'Africa',             12,                              2],
+//                  ['Congo',     'Africa',             10,                              12],
+//                  ['Zaire',     'Africa',             8,                               10]
+//                ]);
+//                var chart = new google.visualization.TreeMap(document.getElementById('barchart'));
+//                chart.draw(data, { minColor: '#f00',midColor: '#ddd',maxColor: '#0d0',headerHeight: 15,fontColor: 'black',showScale: true});
+//                }
+//        }
         function CreateTreeChart(data) {
             var chartdatum = data;
+            var sourceData = chartdatum.source;
                 google.charts.load('current', {
                 'packages': ['treemap']
             });
+
             google.charts.setOnLoadCallback(drawChart);
+                var result = [];
+                var j = 2;
+                result.push(Object.keys(chartdatum.source[0]));
+                result[0].push("size", "color");
+                result.push(["Global",null,0,0]);
+                    for (var i in chartdatum.source) {
+                    chartdatum.source[i].value = parseFloat(chartdatum.source[i].value);
+                    result.push(Object.values(chartdatum.source[i]));
+                    result[parseInt(j)+parseInt(i)].push(chartdatum.source[i].value);
+                    result[parseInt(j)+parseInt(i)].splice( 1, 0, 'Global');
+                    }
             function drawChart() {
-                var data = google.visualization.arrayToDataTable([
-                  ['Location', 'Parent', 'Market trade volume (size)', 'Market increase/decrease (color)'],
-                  ['Global',    null,                 0,                               0],
-                  ['America',   'Global',             0,                               0],
-                  ['Europe',    'Global',             0,                               0],
-                  ['Asia',      'Global',             0,                               0],
-                  ['Australia', 'Global',             0,                               0],
-                  ['Africa',    'Global',             0,                               0],
-                  ['Brazil',    'America',            11,                              10],
-                  ['USA',       'America',            52,                              31],
-                  ['Mexico',    'America',            24,                              12],
-                  ['Canada',    'America',            16,                              -23],
-                  ['France',    'Europe',             42,                              -11],
-                  ['Germany',   'Europe',             31,                              -2],
-                  ['Sweden',    'Europe',             22,                              -13],
-                  ['Italy',     'Europe',             17,                              4],
-                  ['UK',        'Europe',             21,                              -5],
-                  ['China',     'Asia',               36,                              4],
-                  ['Japan',     'Asia',               20,                              -12],
-                  ['India',     'Asia',               40,                              63],
-                  ['Laos',      'Asia',               4,                               34],
-                  ['Mongolia',  'Asia',               1,                               -5],
-                  ['Israel',    'Asia',               12,                              24],
-                  ['Iran',      'Asia',               18,                              13],
-                  ['Pakistan',  'Asia',               11,                              -52],
-                  ['Egypt',     'Africa',             21,                              0],
-                  ['S. Africa', 'Africa',             30,                              43],
-                  ['Sudan',     'Africa',             12,                              2],
-                  ['Congo',     'Africa',             10,                              12],
-                  ['Zaire',     'Africa',             8,                               10]
-                ]);
+            var data = google.visualization.arrayToDataTable(result);
+               /* var data = google.visualization.arrayToDataTable([
+                  ['Product', 'Parent', 'Market trade volume (size)', 'Market increase/decrease (color)'],
+                  ['Products',    null,             0,                             0],
+                  ['Avastin',    'Products',             20,                             20],
+                  ['Lipitor',    'Products',             35,                             35],
+                  ['Herceptin',  'Products',             54,                              54],
+
+                ]);*/
                 var chart = new google.visualization.TreeMap(document.getElementById('barchart'));
-                chart.draw(data, { minColor: '#f00',midColor: '#ddd',maxColor: '#0d0',headerHeight: 15,fontColor: 'black',showScale: true});
+               chart.draw(data,options);
                 }
         }
 
         function CreateGeoChart(data) {
             var chartdatum = data;
-//            var source = [
-//      {
-//        "label": "BG",
-//        "value": "1"
-//      },
-//	   {
-//        "label": "ES",
-//        "value": "3"
-//      },
-//	  {
-//        "label": "FR",
-//        "value": "1"
-//      },
-//	  {
-//        "label": "GR",
-//        "value": "1"
-//      },
-//	  {
-//        "label": "KR",
-//        "value": "3"
-//      },
-//	  {
-//        "label": "JP",
-//        "value": "3"
-//      },
-//      {
-//        "label": "US",
-//        "value": "8"
-//      }
-//];
+
             var result = [];
             //Need proper handling
             result.push(Object.keys(chartdatum.source[0]));
@@ -384,45 +388,72 @@ $(document).ready(function() {
             }
         }
 
+//        function CreateLineChart(data) {
+//            //var chartdatum = data;
+//            //  if(length == 1){
+//            // 	   width = 900;
+//            // 	   height= 500;
+//            //  }
+//
+//            //var chartdetail = JSON.parse(data)
+//            //var data = jQuery.parseJSON(JSON.stringify(data))
+//            console.log(data)
+//            var chartdatum = data;
+//            var result = [];
+//            result.push(Object.keys(chartdatum.source[0]));
+//            console.log(Object.keys(chartdatum.source[0]));
+//            //console.log(data)
+//            for (var i in chartdatum.source) {
+//                chartdatum.source[i].value = parseFloat(chartdatum.source[i].value);
+//                result.push(Object.values(chartdatum.source[i]));
+//            }
+//
+//            console.log(result)
+//            google.charts.load('current', {
+//                'packages': ['corechart'],
+//                // Note: you will need to get a mapsApiKey for your project.
+//                // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
+//                'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
+//            });
+//            google.charts.setOnLoadCallback(drawChart);
+//
+//            function drawChart() {
+//                var data = google.visualization.arrayToDataTable(result);
+//
+//                var chart = new google.visualization.LineChart(document.getElementById('barchart'));
+//
+//                chart.draw(data, options);
+//            }
+//
+//
+//        }
+
+
         function CreateLineChart(data) {
-            //var chartdatum = data;
-            //  if(length == 1){
-            // 	   width = 900;
-            // 	   height= 500;
-            //  }
+        var chartdatum = data;
+        var source1 = chartdatum.source;
+        google.charts.load('current', {
+        'packages': ['corechart']
+    });
+         google.charts.setOnLoadCallback(drawChart);
 
-            //var chartdetail = JSON.parse(data)
-            //var data = jQuery.parseJSON(JSON.stringify(data))
-            console.log(data)
-            var chartdatum = data;
-            var result = [];
-            result.push(Object.keys(chartdatum.source[0]));
-            console.log(Object.keys(chartdatum.source[0]));
-            //console.log(data)
-            for (var i in chartdatum.source) {
-                chartdatum.source[i].value = parseFloat(chartdatum.source[i].value);
-                result.push(Object.values(chartdatum.source[i]));
-            }
+                   var result = [];
+                   final_json =[];
+                   var new_key = Object.keys(chartdatum.source[0].values);
+                   new_key.sort();
+                   new_key.unshift("country");
+                   final_json.push(new_key);
+                   source1.forEach(function(Object){
+                   final_json.push([Object.country,parseFloat(Object.values.Customer_MDM),parseFloat(Object.values.Email),parseFloat(Object.values.RDM),parseFloat(Object.values['Web/Clickstream/Portal'])]);
 
-            console.log(result)
-            google.charts.load('current', {
-                'packages': ['corechart'],
-                // Note: you will need to get a mapsApiKey for your project.
-                // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
-                'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
-            });
-            google.charts.setOnLoadCallback(drawChart);
-
-            function drawChart() {
-                var data = google.visualization.arrayToDataTable(result);
-
-                var chart = new google.visualization.LineChart(document.getElementById('barchart'));
-
-                chart.draw(data, options);
-            }
-
-
+                   });
+                console.log(final_json);
+        function drawChart() {
+        var data = google.visualization.arrayToDataTable(final_json);
+            var chart = new google.visualization.LineChart(document.getElementById('barchart'));
+            chart.draw(data, options);
         }
+}
 
          function CreateSankeyChart(data) {
             var chartdatum = data;
