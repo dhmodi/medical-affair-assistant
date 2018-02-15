@@ -28,13 +28,14 @@ import datetime
 import math
 import psycopg2
 import apiai
-
+import requests
 # Flask app should start in global layout
 app = Flask(__name__, static_url_path='')
 socketio = SocketIO(app)
 
 parser = ""
-
+baseUrl = "https://api.dialogflow.com/v1/query?v=20170712"
+accessToken = "66ad5ee869a34d3593181c0f9ff0922c"
 
 # @app.route('/')
 # def index():
@@ -111,6 +112,53 @@ def visualization():
 # def inventory():
 #     return redirect(url_for('static_url', filename='index.html'))
 
+@app.route('/emailAffair', methods=['POST'])
+def emailAffair():
+    req = request.get_json(silent=True, force=True)
+    print("Request")
+    action = ""
+    speech = ""
+    print(json.dumps(req, indent=4))
+    if (req.get("inquiryQuestion") is not None):
+        if (req.get("age") is None):
+            age = "0"
+        else:
+            age = req.get("age")
+
+        if (req.get("location") is None):
+            location = "India"
+        else:
+            location = req.get("location")
+
+        if (req.get("profession") is None):
+            profession = "Doctor"
+        else:
+            profession = req.get("profession")
+
+        values = json.dumps({
+                "lang": "en",
+                "query": req.get("inquiryQuestion")+" "+age+" "+profession+" "+location,
+                "sessionId": "12345",
+                "timezone": "America/New_York"
+            })
+        headers ={
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+accessToken
+                }
+        res = json.loads(requests.post(url=baseUrl, data=values,headers=headers).text)
+        print(res.get("result").get("fulfillment").get("speech"))
+        action = res.get("result").get("action")
+        speech = res.get("result").get("fulfillment").get("speech")
+
+    res = json.dumps({
+            "category": action,
+            "response": speech
+        }, indent=4)
+    print(res)
+    r = make_response(res)
+    r.headers['Content-Type'] = 'application/json'
+    return r
+
 @app.route('/medicalAffair', methods=['POST'])
 def medicalAffair():
     req = request.get_json(silent=True, force=True)
@@ -118,7 +166,7 @@ def medicalAffair():
     print("Request:")
     print(json.dumps(req, indent=4))
 
-    res = processRequest    (req)
+    res = processRequest(req)
 
     res = json.dumps(res, indent=4)
     print(res)
