@@ -521,7 +521,7 @@ $(document).ready(function() {
 
     var recognition;
     nlp = window.nlp_compromise;
-    var accessToken = "ded191608e1146ec917fa35b83d7c829";
+    var accessToken = "66ad5ee869a34d3593181c0f9ff0922c";
     var baseUrl = "https://api.dialogflow.com/v1/";
     var messages = [], //array that hold the record of each string in chat
         lastUserMessage = "", //keeps track of the most recent input string from the user
