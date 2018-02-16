@@ -442,15 +442,6 @@ def processRequest(req):
             "source": "Dhaval"
         }
     elif (req.get("result").get("action") == "medical.visualization"):
-        url = urlparse("postgres://caedtehsggslri:4679ba0abec57484a1d7ed261b74e80b08391993433c77c838c58415087a9c34@ec2-107-20-255-96.compute-1.amazonaws.com:5432/d5tmi1ihm5f6hv")
-        print (url.path[1:])
-        conn = psycopg2.connect(
-            database=url.path[1:],
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port
-        )
         print("Medical Visualization")
         #chartType = "line"
         incoming_query = req.get("result").get("resolvedQuery")
@@ -503,14 +494,19 @@ def processRequest(req):
             minRecord = agg_df.ix[agg_df['value'].idxmin()].to_frame().T
             agg_df['label'] = agg_df['label'].astype('str')
             agg_df['value'] = agg_df['value'].astype('str')
+
+
+
             agg_df.drop(columns=['index'], inplace=True)
             agg_df.reset_index(drop=True, inplace=True)
             print("agg_df:")
             print(agg_df)
+
             if chartType == 'geochart':
                 for id,cn in enumerate(agg_df['label']):
                     if cn == 'UK':
                         agg_df['label'][id] = 'GB'
+
             chartData = agg_df.to_json(orient='records')
             # chartData = [{"label": str(row[0]), "value": str(row[1])} for row in rows]
             print("agg_df:")
@@ -520,7 +516,10 @@ def processRequest(req):
             # chartData = json.dumps(chartData)
             #final_json = '[ { "type":"' + chartType + '", "chartcontainer":"barchart", "caption":"' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"xAxis", "yAxisName":"yAxis","source":[ { "label": "Mon", "value": "15123" }, { "label": "Tue", "value": "14233" }, { "label": "Wed", "value": "23507" }, { "label": "Thu", "value": "9110" }, { "label": "Fri", "value": "15529" }, { "label": "Sat", "value": "20803" }, { "label": "Sun", "value": "19202" } ]}]'
             final_json = '[ { "type":"' + chartType + '", "chartcontainer":"barchart", "caption":"A ' + chartType + ' chart showing ' + xAxis + ' vs ' + yAxis + '", "subCaption":"", "xAxisName":"' + xAxis + '", "yAxisName":"' + yAxis + '", "source":' + chartData + '}]'
+
+
             print(final_json)
+
             socketio.emit('chartgoogledata', final_json)
             outText = "The " + xAxis + " " + str(
                 maxRecord['label'].values[0]) + " has maximum " + yAxis + " while the " + xAxis + " " + str(
@@ -567,10 +566,17 @@ def processRequest(req):
             print("agg_df:")
             print(agg_df)
 
+            pd.options.mode.chained_assignment = None
+
+            for i in range(len(agg_df['datatype'])):
+                agg_df['datatype'][i] = agg_df['datatype'][i].replace(" ", "_")
+
+            print(agg_df)
+
             unique_countries = set(agg_df['country'])
             unique_countries = list(unique_countries)
 
-            unique_datatypes = set(df['datatype'])
+            unique_datatypes = set(agg_df['datatype'])
             unique_datatypes = list(unique_datatypes)
 
             df = agg_df
@@ -623,6 +629,7 @@ def processRequest(req):
                 # "contextOut": [],
                 "source": "Dhaval"
             }
+
 if __name__ == '__main__':
     database = Database.Database()
     database.load("cognitiveSQL/database/HCM.sql")
