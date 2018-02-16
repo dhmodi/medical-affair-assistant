@@ -218,16 +218,21 @@ def processRequest(req):
             sent_value=OutMap[column2]
 
             print(sent_label)
-            outText=whereColumn[0]+ " " + OutMap[whereValue[0]] + " has the following " + sent_label + ":"
+            outText=whereColumn[0]+ " " + OutMap[whereValue[0]] + " has the following " + sent_label + ": "
             print(rows)
             print(columns)
             print(len(columns))
 
+            no_of_rows=len(rows)
+            counter=no_of_rows
             for row in rows:
+                counter=counter-1
                 label=row[0]
                 value=row[1]
-                outText = outText + str(column) + " " + str(label) + " has " + str(column2)+ " " + str(value) + ", "
-
+                if counter != 0:
+                    outText = outText + str(column) + " " + str(label) + " has " + str(column2)+ " of " + str(value) + ", "
+                else:
+                    outText = outText + "whereas " + str(column) + " " + str(label) + " has " + str(column2)+ " of " + str(value)
             #outText = "The"
         print(outText)
 
@@ -287,8 +292,16 @@ def processRequest(req):
             df['value'] = df['value'].fillna(0)
             agg_df = df.groupby(['label'], as_index=False).agg({"value": "sum"})
             maxRecord = agg_df.ix[agg_df['value'].idxmax()].to_frame().T
+            maxValue = agg_df['value'].max()
+            print(maxRecord)
+            print(maxValue)
+
             agg_df = agg_df.reset_index()
             minRecord = agg_df.ix[agg_df['value'].idxmin()].to_frame().T
+            minValue = agg_df['value'].min()
+            print(minRecord)
+            print(minValue)
+
             agg_df['label'] = agg_df['label'].astype('str')
             agg_df['value'] = agg_df['value'].astype('str')
 
@@ -319,8 +332,8 @@ def processRequest(req):
 
             socketio.emit('chartgoogledata', final_json)
             outText = "The " + xAxis + " " + str(
-                maxRecord['label'].values[0]) + " has maximum " + yAxis + " while the " + xAxis + " " + str(
-                minRecord['label'].values[0]) + " has minimum " + yAxis + ". Refer to the screen for more details."
+                maxRecord['label'].values[0]) + " has maximum " + yAxis + " of " + str(maxValue) + " while the " + xAxis + " " + str(
+                minRecord['label'].values[0]) + " has minimum " + yAxis + " of " + str(minValue) + ". Refer to the screen for more details."
             # outText = "Refer to the screen for more details."
             print(outText)
             return {

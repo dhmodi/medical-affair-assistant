@@ -393,45 +393,6 @@ $(document).ready(function() {
             }
         }
 
-//        function CreateLineChart(data) {
-//            //var chartdatum = data;
-//            //  if(length == 1){
-//            // 	   width = 900;
-//            // 	   height= 500;
-//            //  }
-//
-//            //var chartdetail = JSON.parse(data)
-//            //var data = jQuery.parseJSON(JSON.stringify(data))
-//            console.log(data)
-//            var chartdatum = data;
-//            var result = [];
-//            result.push(Object.keys(chartdatum.source[0]));
-//            console.log(Object.keys(chartdatum.source[0]));
-//            //console.log(data)
-//            for (var i in chartdatum.source) {
-//                chartdatum.source[i].value = parseFloat(chartdatum.source[i].value);
-//                result.push(Object.values(chartdatum.source[i]));
-//            }
-//
-//            console.log(result)
-//            google.charts.load('current', {
-//                'packages': ['corechart'],
-//                // Note: you will need to get a mapsApiKey for your project.
-//                // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
-//                'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
-//            });
-//            google.charts.setOnLoadCallback(drawChart);
-//
-//            function drawChart() {
-//                var data = google.visualization.arrayToDataTable(result);
-//
-//                var chart = new google.visualization.LineChart(document.getElementById('barchart'));
-//
-//                chart.draw(data, options);
-//            }
-//
-//
-//        }
 
 
         function CreateLineChart(data) {
