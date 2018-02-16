@@ -442,6 +442,15 @@ def processRequest(req):
             "source": "Dhaval"
         }
     elif (req.get("result").get("action") == "medical.visualization"):
+        url = urlparse("postgres://caedtehsggslri:4679ba0abec57484a1d7ed261b74e80b08391993433c77c838c58415087a9c34@ec2-107-20-255-96.compute-1.amazonaws.com:5432/d5tmi1ihm5f6hv")
+        print (url.path[1:])
+        conn = psycopg2.connect(
+            database=url.path[1:],
+            user=url.username,
+            password=url.password,
+            host=url.hostname,
+            port=url.port
+        )
         print("Medical Visualization")
         #chartType = "line"
         incoming_query = req.get("result").get("resolvedQuery")
@@ -629,6 +638,7 @@ def processRequest(req):
                 # "contextOut": [],
                 "source": "Dhaval"
             }
+
 
 if __name__ == '__main__':
     database = Database.Database()
