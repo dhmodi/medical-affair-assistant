@@ -362,39 +362,76 @@ $(document).ready(function() {
             }
         }
 
+//        function CreateLineChart(data) {
+//            var chartdatum = data;
+//            //  if(length == 1){
+//            // 	   width = 900;
+//            // 	   height= 500;
+//            //  }
+//            var result = [];
+//            // result.push(Object.keys(chartdatum.source[0]));
+//            result.push([chartdatum.xAxisName, chartdatum.yAxisName]);
+//            console.log(Object.keys(chartdatum.source[0]));
+//            for (var i in chartdatum.source) {
+//                chartdatum.source[i].value = parseFloat(chartdatum.source[i].value);
+//                result.push(Object.values(chartdatum.source[i]));
+//            }
+//
+//            console.log(result)
+//            google.charts.load('current', {
+//                'packages': ['corechart'],
+//                // Note: you will need to get a mapsApiKey for your project.
+//                // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
+//                'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
+//            });
+//            google.charts.setOnLoadCallback(drawChart);
+//
+//            function drawChart() {
+//                var data = google.visualization.arrayToDataTable(result);
+//
+//                var chart = new google.visualization.LineChart(document.getElementById('barchart'));
+//
+//                chart.draw(data, options);
+//            }
+//        }
+
         function CreateLineChart(data) {
-            var chartdatum = data;
-            //  if(length == 1){
-            // 	   width = 900;
-            // 	   height= 500;
-            //  }
-            var result = [];
-            // result.push(Object.keys(chartdatum.source[0]));
-            result.push([chartdatum.xAxisName, chartdatum.yAxisName]);
-            console.log(Object.keys(chartdatum.source[0]));
-            for (var i in chartdatum.source) {
+        var chartdatum = data;
+         var result = [];
+        var source1 = chartdatum.source;
+        google.charts.load('current', {
+        'packages': ['corechart']
+    });
+         google.charts.setOnLoadCallback(drawChart);
+
+                 if((typeof source1[0].values) == 'object'){
+                  // var result = [];
+                   final_json =[];
+                   var new_key = Object.keys(chartdatum.source[0].values);
+                   new_key.sort();
+                   new_key.unshift("country");
+                   result.push(new_key);
+                   source1.forEach(function(Object){
+                   result.push([Object.country,parseFloat(Object.values.Customer_MDM),parseFloat(Object.values.Email),parseFloat(Object.values.RDM),parseFloat(Object.values['Web/Clickstream/Portal'])]);
+
+                   });
+                   }
+                   else
+        {
+
+             result.push(Object.keys(chartdatum.source[0]));
+           for (var i in chartdatum.source) {
                 chartdatum.source[i].value = parseFloat(chartdatum.source[i].value);
-                result.push(Object.values(chartdatum.source[i]));
-            }
-
-            console.log(result)
-            google.charts.load('current', {
-                'packages': ['corechart'],
-                // Note: you will need to get a mapsApiKey for your project.
-                // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
-                'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
-            });
-            google.charts.setOnLoadCallback(drawChart);
-
-            function drawChart() {
-                var data = google.visualization.arrayToDataTable(result);
-
-                var chart = new google.visualization.LineChart(document.getElementById('barchart'));
-
-                chart.draw(data, options);
+              result.push(Object.values(chartdatum.source[i]));
             }
         }
 
+        function drawChart() {
+        var data = google.visualization.arrayToDataTable(result);
+            var chart = new google.visualization.LineChart(document.getElementById('barchart'));
+            chart.draw(data, options);
+        }
+}
         function CreateSankeyChart(data) {
             var chartdatum = data;
             /* var result = [];
@@ -500,7 +537,7 @@ var baseUrl = "https://api.dialogflow.com/v1/";
 var messages = [], //array that hold the record of each string in chat
     lastUserMessage = "", //keeps track of the most recent input string from the user
     botMessage = "", //var keeps track of what the chatbot is going to say
-    botName = 'Assistant'; //name of the chatbot
+    botName = 'Mira'; //name of the chatbot
 
 function startRecognition() {
     recognition = new webkitSpeechRecognition();
