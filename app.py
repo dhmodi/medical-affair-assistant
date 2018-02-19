@@ -118,20 +118,22 @@ def emailAffair():
     print("Request")
     action = ""
     speech = ""
+    productName = ""
     print(json.dumps(req, indent=4))
-    if (req.get("inquiryQuestion") is not None):
-        if (req.get("age") is None):
+    if (req.get("inquiryQuestion") is not None or req.get("inquiryQuestion") != ""):
+        print(req.get("age"))
+        if req.get("age") == "":
             age = "0"
         else:
             age = req.get("age")
 
-        if (req.get("location") is None):
+        if (req.get("location") == ""):
             location = "India"
         else:
             location = req.get("location")
 
-        if (req.get("profession") is None):
-            profession = "Doctor"
+        if (req.get("profession") == ""):
+            profession = "Doc"
         else:
             profession = req.get("profession")
 
@@ -149,10 +151,12 @@ def emailAffair():
         print(res.get("result").get("fulfillment").get("speech"))
         action = res.get("result").get("action")
         speech = res.get("result").get("fulfillment").get("speech")
+        productName = res.get("result").get("parameters").get("ProductName")
 
     res = json.dumps({
             "category": action,
-            "response": speech
+            "response": speech,
+            "ProductName": productName
         }, indent=4)
     print(res)
     r = make_response(res)
