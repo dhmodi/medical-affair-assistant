@@ -1,12 +1,12 @@
 sum,total number,how many
 min,minimum,lowest,low,least
 max,maximum,max,highest,high,more
-datatype trend dq_score,dq trend,dq trending
+datatype trend dq_score,dq trend,dq trending,dcu trend,dcu trending
 dimension failcount known_issues,known issues
-score dq_score,dq score
+score dq_score,dq score,dcu score
 datatype,data type
 country,countries
-country uk,uk
+country uk,uk,u.k.,u. k.
 country france,france
 country italy,italy
 country germany,germany

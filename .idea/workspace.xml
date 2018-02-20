@@ -20,7 +20,7 @@
       <file leaf-file-name="app.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4961">
+            <state relative-caret-position="21300">
               <caret line="854" column="70" lean-forward="false" selection-start-line="854" selection-start-column="70" selection-end-line="854" selection-end-column="70" />
               <folding>
                 <element signature="e#23#60#0" expanded="true" />
@@ -52,8 +52,8 @@
       <file leaf-file-name="synonyms.csv" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cognitiveSQL/alias/synonyms.csv">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="17" column="16" lean-forward="false" selection-start-line="17" selection-start-column="16" selection-end-line="17" selection-end-column="16" />
+            <state relative-caret-position="75">
+              <caret line="3" column="67" lean-forward="false" selection-start-line="3" selection-start-column="67" selection-end-line="3" selection-end-column="67" />
               <folding />
             </state>
           </provider>
@@ -199,8 +199,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -263,6 +261,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -385,7 +385,14 @@
       <option name="project" value="LOCAL" />
       <updated>1519127666176</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="products">
+      <created>1519133283474</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1519133283474</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -456,7 +463,8 @@
     <MESSAGE value="added requests entry to requirements.txt file" />
     <MESSAGE value="Changed Image on speech and Visulisation page" />
     <MESSAGE value="pr" />
-    <option name="LAST_COMMIT_MESSAGE" value="pr" />
+    <MESSAGE value="products" />
+    <option name="LAST_COMMIT_MESSAGE" value="products" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -754,7 +762,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4961">
+        <state relative-caret-position="21300">
           <caret line="854" column="70" lean-forward="false" selection-start-line="854" selection-start-column="70" selection-end-line="854" selection-end-column="70" />
           <folding>
             <element signature="e#23#60#0" expanded="true" />
@@ -764,8 +772,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cognitiveSQL/alias/synonyms.csv">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="17" column="16" lean-forward="false" selection-start-line="17" selection-start-column="16" selection-end-line="17" selection-end-column="16" />
+        <state relative-caret-position="75">
+          <caret line="3" column="67" lean-forward="false" selection-start-line="3" selection-start-column="67" selection-end-line="3" selection-end-column="67" />
           <folding />
         </state>
       </provider>
