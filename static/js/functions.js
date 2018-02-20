@@ -286,12 +286,12 @@ $(document).ready(function() {
                 var j = 2;
                 result.push(Object.keys(chartdatum.source[0]));
                 result[0].push("size", "color");
-                result.push(["Global",null,0,0]);
+                result.push(["TreeMap",null,0,0]);
                     for (var i in chartdatum.source) {
                     chartdatum.source[i].value = parseFloat(chartdatum.source[i].value);
                     result.push(Object.values(chartdatum.source[i]));
                     result[parseInt(j)+parseInt(i)].push(chartdatum.source[i].value);
-                    result[parseInt(j)+parseInt(i)].splice( 1, 0, 'Global');
+                    result[parseInt(j)+parseInt(i)].splice( 1, 0, 'TreeMap');
                     }
             function drawChart() {
             var data = google.visualization.arrayToDataTable(result);
@@ -304,7 +304,13 @@ $(document).ready(function() {
 
                 ]);*/
                 var chart = new google.visualization.TreeMap(document.getElementById('barchart'));
-               chart.draw(data,options);
+                options. minColor = '#f00';
+                options.midColor = '#ddd';
+                options.maxColor = '#0d0';
+                options.fontColor = 'black';
+                options.showScale = true;
+                chart.draw(data,options);
+
                 }
         }
 
