@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2172a02b-bc71-424f-b2cc-fb2260de4599" name="Default" comment="Changed Image on speech and Visulisation page">
+    <list default="true" id="2172a02b-bc71-424f-b2cc-fb2260de4599" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/app.py" afterPath="$PROJECT_DIR$/app.py" />
-      <change beforePath="$PROJECT_DIR$/cognitiveSQL/alias/synonyms.csv" afterPath="$PROJECT_DIR$/cognitiveSQL/alias/synonyms.csv" />
-      <change beforePath="$PROJECT_DIR$/cognitiveSQL/database/HCM.sql" afterPath="$PROJECT_DIR$/cognitiveSQL/database/HCM.sql" />
-      <change beforePath="$PROJECT_DIR$/static/js/functions.js" afterPath="$PROJECT_DIR$/static/js/functions.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -20,11 +17,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
-      <file leaf-file-name="app.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="app.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4750">
-              <caret line="521" column="15" lean-forward="false" selection-start-line="521" selection-start-column="12" selection-end-line="521" selection-end-column="15" />
+            <state relative-caret-position="359">
+              <caret line="854" column="70" lean-forward="true" selection-start-line="854" selection-start-column="70" selection-end-line="854" selection-end-column="70" />
               <folding>
                 <element signature="e#23#60#0" expanded="true" />
               </folding>
@@ -52,7 +49,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="synonyms.csv" pinned="false" current-in-tab="true">
+      <file leaf-file-name="synonyms.csv" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cognitiveSQL/alias/synonyms.csv">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="145">
@@ -132,6 +129,7 @@
       <find>Tree</find>
       <find>line</find>
       <find>904</find>
+      <find>alexa</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -148,9 +146,9 @@
         <option value="$PROJECT_DIR$/static/speech.html" />
         <option value="$PROJECT_DIR$/static/visualization.html" />
         <option value="$PROJECT_DIR$/cognitiveSQL/database/HCM.sql" />
-        <option value="$PROJECT_DIR$/app.py" />
         <option value="$PROJECT_DIR$/static/js/functions.js" />
         <option value="$PROJECT_DIR$/cognitiveSQL/alias/synonyms.csv" />
+        <option value="$PROJECT_DIR$/app.py" />
       </list>
     </option>
   </component>
@@ -373,7 +371,14 @@
       <option name="project" value="LOCAL" />
       <updated>1519055726698</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="pr">
+      <created>1519121762375</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1519121762375</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -386,7 +391,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3105802" sideWeight="0.50208336" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293718" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5745165" sideWeight="0.49791667" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.52104664" sideWeight="0.49791667" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="FAQ Robot" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23958333" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -443,7 +448,8 @@
     <MESSAGE value="Added new service emailAffair." />
     <MESSAGE value="added requests entry to requirements.txt file" />
     <MESSAGE value="Changed Image on speech and Visulisation page" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed Image on speech and Visulisation page" />
+    <MESSAGE value="pr" />
+    <option name="LAST_COMMIT_MESSAGE" value="pr" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -742,21 +748,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4750">
-          <caret line="521" column="15" lean-forward="false" selection-start-line="521" selection-start-column="12" selection-end-line="521" selection-end-column="15" />
-          <folding>
-            <element signature="e#23#60#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cognitiveSQL/alias/synonyms.csv">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="145">
           <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="12" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="359">
+          <caret line="854" column="70" lean-forward="true" selection-start-line="854" selection-start-column="70" selection-end-line="854" selection-end-column="70" />
+          <folding>
+            <element signature="e#23#60#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -681,7 +681,7 @@ def processRequest(req):
                 }
 
     elif is_Alexa_json == True:
-        if (req.get("request").get("intent").get("name") == "medical.search"):
+        if (req.get("request").get("intent").get("name") == "medicalsearch"):
             url = urlparse("postgres://caedtehsggslri:4679ba0abec57484a1d7ed261b74e80b08391993433c77c838c58415087a9c34@ec2-107-20-255-96.compute-1.amazonaws.com:5432/d5tmi1ihm5f6hv")
             print (url.path[1:])
             conn = psycopg2.connect(
@@ -852,7 +852,7 @@ def processRequest(req):
             alexaResponse["response"]["outputSpeech"]["text"] = outText
             return alexaResponse
 
-        elif (req.get("request").get("intent").get("name") == "medical.visualization"):
+        elif (req.get("request").get("intent").get("name") == "medicalvisualization"):
 
             url = urlparse("postgres://caedtehsggslri:4679ba0abec57484a1d7ed261b74e80b08391993433c77c838c58415087a9c34@ec2-107-20-255-96.compute-1.amazonaws.com:5432/d5tmi1ihm5f6hv")
             print (url.path[1:])
