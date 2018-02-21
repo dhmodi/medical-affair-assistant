@@ -282,6 +282,7 @@ def processRequest(req):
                         "displayText": response,
                         # "data": data,
                         # "contextOut": [],
+                        "AppId":1,
                         "source": req.get("result").get("source")
                     }
                 else:
