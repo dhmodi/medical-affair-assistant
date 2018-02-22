@@ -281,7 +281,7 @@ def processRequest(req):
                             print("ProdWork")
                             Prod_Response = select_inquiry_response(
                                 req.get("result").get("parameters").get("ProductName"),
-                                "how_does_it_to_work",req.get("result").get("parameters").get("ProdIndication"))
+                                "how_does_it_work",req.get("result").get("parameters").get("ProdIndication"))
                             if Prod_Response != None:
                                 status = True
                                 if len(Prod_Response[0]) > 0:
@@ -299,7 +299,7 @@ def processRequest(req):
                             print("ProdSideEffect")
                             Prod_Response = select_inquiry_response(
                                 req.get("result").get("parameters").get("ProductName"),
-                                "sideeffect",req.get("result").get("parameters").get("ProdIndication"))
+                                "sideeffects",req.get("result").get("parameters").get("ProdIndication"))
                             if Prod_Response != None:
                                 status = True
                                 if len(Prod_Response[0]) > 0:
