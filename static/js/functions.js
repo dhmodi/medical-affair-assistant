@@ -209,6 +209,7 @@ $(document).ready(function() {
             } else if (val.type == "trend") {
                 CreateComboChart(val);
             }
+            $('#index-banner').hide(true);
             $('#chartshow').show(true);
             $('#chartshow')[0].scrollIntoView(true);
             status = true;
