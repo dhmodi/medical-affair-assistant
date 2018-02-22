@@ -345,6 +345,8 @@ def processRequest(req):
             cur.execute(queryString)
             rows = cur.fetchall()
             cur.close()
+            conn.close()
+
             # outText = ', '.join(str(x) for x in rows[0])
             # outText = ', '.join(str(element).split(".")[0] for row in rows for element in row)
             count = 0
@@ -520,6 +522,7 @@ def processRequest(req):
             cur.execute(queryString)
             rows = cur.fetchall()
             cur.close()
+            conn.close()
             print(rows)
             print(list(columns))
 
@@ -722,6 +725,7 @@ def processRequest(req):
             cur.execute(queryString)
             rows = cur.fetchall()
             cur.close()
+            conn.close()
 
             # outText = ', '.join(str(x) for x in rows[0])
             # outText = ', '.join(str(element).split(".")[0] for row in rows for element in row)
@@ -898,6 +902,7 @@ def processRequest(req):
             cur.execute(queryString)
             rows = cur.fetchall()
             cur.close()
+            conn.close()
             print(rows)
             print(list(columns))
 
