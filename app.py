@@ -41,7 +41,7 @@ accessToken = "66ad5ee869a34d3593181c0f9ff0922c"
 # def index():
 #     return redirect(url_for('static_url', filename='index.html'))
 
-def select_inquiry_response(prod_name, columnName):
+def select_inquiry_response(prod_name, columnName,indication):
     try:
         url = urlparse(
             "postgres://caedtehsggslri:4679ba0abec57484a1d7ed261b74e80b08391993433c77c838c58415087a9c34@ec2-107-20-255-96.compute-1.amazonaws.com:5432/d5tmi1ihm5f6hv")
@@ -54,7 +54,7 @@ def select_inquiry_response(prod_name, columnName):
             port=url.port
         )
         cur = conn.cursor()
-        sql = "select " + columnName + " from public.inquiry_response where product_name = '%s' limit %s" %(prod_name,1)
+        sql = "select " + columnName + " from public.inquiry_response where product_name = '%s' and indication = '%s' limit %s" %(prod_name,indication,1)
         cur.execute(sql)
         row = cur.fetchone()
         #print(row[1])
@@ -193,7 +193,7 @@ def processRequest(req):
 
     if is_Apiai_json == True:
         if (req.get("result").get("action") == "ProdAppearance" or req.get("result").get(
-                "action") == "ProdAvailability" or req.get("result").get("action") == "ProdGenericAvailability"):
+                "action") == "ProdAvailability" or req.get("result").get("action") == "ProdGenericAvailability" or req.get("result").get("action") == "ProdDescription" or req.get("result").get("action") == "ProdWork" or req.get("result").get("action") == "ProdSideEffect" or req.get("result").get("action") == "ProdDosageReco"):
             print(req.get("result").get("action"))
             actionIncompleteStatus = req.get("result").get("actionIncomplete")
             print(actionIncompleteStatus)
@@ -213,7 +213,7 @@ def processRequest(req):
                     if (req.get("result").get("action") == "ProdAppearance"):
                         print("ProdApperance")
                         Prod_Response = select_inquiry_response(req.get("result").get("parameters").get("ProductName"),
-                                                                "Apperance")
+                                                                "Apperance",req.get("result").get("parameters").get("ProdIndication"))
                         if Prod_Response != None:
                             status = True;
                             if len(Prod_Response[0]) > 0:
@@ -230,7 +230,7 @@ def processRequest(req):
                     elif (req.get("result").get("action") == "ProdAvailability"):
                         print("ProdAvailability")
                         Prod_Response = select_inquiry_response(req.get("result").get("parameters").get("ProductName"),
-                                                                "Availability")
+                                                                "Availability",req.get("result").get("parameters").get("ProdIndication"))
                         if Prod_Response != None:
                             status = True;
                             if len(Prod_Response[0]) > 0:
@@ -246,7 +246,7 @@ def processRequest(req):
                     elif (req.get("result").get("action") == "ProdGenericAvailability"):
                         print("ProdGenericAvailable")
                         Prod_Response = select_inquiry_response(req.get("result").get("parameters").get("ProductName"),
-                                                                "Generic_Availables")
+                                                                "Generic_Availables",req.get("result").get("parameters").get("ProdIndication"))
                         if Prod_Response != None:
                             status = True
                             if len(Prod_Response[0]) > 0:
@@ -259,6 +259,77 @@ def processRequest(req):
                         else:
                             status = False
                             fac_unfac = 'Unfacilitated'
+                    elif (req.get("result").get("action") == "ProdDescription"):
+                            print("ProdDescription")
+                            Prod_Response = select_inquiry_response(
+                                req.get("result").get("parameters").get("ProductName"),
+                                "description",req.get("result").get("parameters").get("ProdIndication"))
+                            if Prod_Response != None:
+                                status = True
+                                if len(Prod_Response[0]) > 0:
+                                    fac_unfac = 'Facilitated'
+                                    response = Prod_Response[0] + "Was this information useful?"
+                                else:
+                                    fac_unfac = 'UnFacilitated'
+                                    response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                                master_prod = 'Product Generic Availability'
+                            else:
+                                status = False
+                                fac_unfac = 'Unfacilitated'
+                            # Default else
+                    elif (req.get("result").get("action") == "ProdWork"):
+                            print("ProdWork")
+                            Prod_Response = select_inquiry_response(
+                                req.get("result").get("parameters").get("ProductName"),
+                                "how_does_it_to_work",req.get("result").get("parameters").get("ProdIndication"))
+                            if Prod_Response != None:
+                                status = True
+                                if len(Prod_Response[0]) > 0:
+                                    fac_unfac = 'Facilitated'
+                                    response = Prod_Response[0] + "Was this information useful?"
+                                else:
+                                    fac_unfac = 'UnFacilitated'
+                                    response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                                master_prod = 'Product Generic Availability'
+                            else:
+                                status = False
+                                fac_unfac = 'Unfacilitated'
+                            # Default else
+                    elif (req.get("result").get("action") == "ProdSideEffect"):
+                            print("ProdSideEffect")
+                            Prod_Response = select_inquiry_response(
+                                req.get("result").get("parameters").get("ProductName"),
+                                "sideeffect",req.get("result").get("parameters").get("ProdIndication"))
+                            if Prod_Response != None:
+                                status = True
+                                if len(Prod_Response[0]) > 0:
+                                    fac_unfac = 'Facilitated'
+                                    response = Prod_Response[0] + "Was this information useful?"
+                                else:
+                                    fac_unfac = 'UnFacilitated'
+                                    response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                                master_prod = 'Product Generic Availability'
+                            else:
+                                status = False
+                                fac_unfac = 'Unfacilitated'
+                            # Default else
+                    elif (req.get("result").get("action") == "ProdDosageReco"):
+                            print("ProdDosageReco")
+                            Prod_Response = select_inquiry_response(
+                                req.get("result").get("parameters").get("ProductName"),
+                                "number_of_times_reco_tot_start_dosage",req.get("result").get("parameters").get("ProdIndication"))
+                            if Prod_Response != None:
+                                status = True
+                                if len(Prod_Response[0]) > 0:
+                                    fac_unfac = 'Facilitated'
+                                    response = Prod_Response[0] + "Was this information useful?"
+                                else:
+                                    fac_unfac = 'UnFacilitated'
+                                    response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                                master_prod = 'Product Generic Availability'
+                            else:
+                                status = False
+                                fac_unfac = 'Unfacilitated'
                             # Default else
                     else:
                         status = False
