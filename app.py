@@ -33,8 +33,7 @@ import requests
 app = Flask(__name__, static_url_path='')
 
 socketio = SocketIO(app)
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY') or \
-    'e5ac358c-f0bf-11e5-9e39-d3b532c10a28'
+app.secret_key = 'my unobvious secret key'
 
 
 parser = ""
@@ -73,9 +72,9 @@ def select_inquiry_response(prod_name, columnName,indication):
             conn.close()
 
 
-def insert_inquiry_details(division,country,master_prod,inquiry,customer_type,customer_channel,facilitated_unfacilitated,case_create_dt,case_clsd_dt,resp_id,response,user_mail_id,query_category):
+def insert_inquiry_details(division,country,master_prod,inquiry,customer_type,customer_channel,facilitated_unfacilitated,case_create_dt,case_clsd_dt,resp_id,response):
 
-    sql = "INSERT INTO public.inquiry_data (Division,Country,Master_Prod ,Inquiry,Customer_Type,Customer_channel,Facilitated_Unfacilitated,Case_Create_Date,Case_Closed_Date,Resp_Id,Response,user_mail_id,query_category) VALUES(%s, %s, %s, %s, %s, %s,%s,%s, %s, %s, %s, %s, %s)";
+    sql = "INSERT INTO public.inquiry_data (Division,Country,Master_Prod ,Inquiry,Customer_Type,Customer_channel,Facilitated_Unfacilitated,Case_Create_Date,Case_Closed_Date,Resp_Id,Response) VALUES(%s, %s, %s, %s, %s, %s,%s,%s, %s, %s, %s)";
 
     try:
         # read database configuration
@@ -94,7 +93,7 @@ def insert_inquiry_details(division,country,master_prod,inquiry,customer_type,cu
         # create a new cursor
         cur = conn.cursor()
         # execute the INSERT statement
-        cur.execute(sql,(division,country,master_prod,inquiry,customer_type,customer_channel,facilitated_unfacilitated,case_create_dt,case_clsd_dt,resp_id,response,user_mail_id,query_category))
+        cur.execute(sql,(division,country,master_prod,inquiry,customer_type,customer_channel,facilitated_unfacilitated,case_create_dt,case_clsd_dt,resp_id,response))
         # commit the changes to the database
         conn.commit()
         # close communication with the database
@@ -198,32 +197,7 @@ def processRequest(req):
 
     if is_Apiai_json == True:
         if (req.get("result").get("action") == "ProdAppearance" or req.get("result").get(
-                "action") == "ProdAvailability" or req.get("result").get("action") == "ProdGenericAvailability" or
-                req.get("result").get("action") == "ProdDescription" or
-                req.get("result").get("action") == "ProdWork" or
-                req.get("result").get("action") == "ProdSideEffect" or
-                req.get("result").get("action") == "ProdDosageReco" or
-                req.get("result").get("action") == "ProductAvailability-Yes" or
-                req.get("result").get("action") == "ProdAppearance-Yes" or
-                req.get("result").get("action") == "ProdGenericAvailability-Yes" or
-                req.get("result").get("action") == "ProdDescription-Yes" or
-                req.get("result").get("action") == "ProdWork-Yes" or
-                req.get("result").get("action") == "ProdSideEffect-Yes" or
-                req.get("result").get("action") == "ProdDosageReco-Yes" or
-                req.get("result").get("action") == "ProductAvailability-Email" or
-                req.get("result").get("action") == "ProdAppearance-Email" or
-                req.get("result").get("action") == "ProdGenericAvailability-Email" or
-                req.get("result").get("action") == "ProdDescription-Email" or
-                req.get("result").get("action") == "ProdWork-Email" or
-                req.get("result").get("action") == "ProdSideEffect-Email" or
-                req.get("result").get("action") == "ProdDosageReco-Email" or
-                req.get("result").get("action") == "ProductAvailability-No" or
-                req.get("result").get("action") == "ProdAppearance-No" or
-                req.get("result").get("action") == "ProdGenericAvailability-No" or
-                req.get("result").get("action") == "ProdDescription-No" or
-                req.get("result").get("action") == "ProdWork-No" or
-                req.get("result").get("action") == "ProdSideEffect-No" or
-                req.get("result").get("action") == "ProdDosageReco-No"):
+                "action") == "ProdAvailability" or req.get("result").get("action") == "ProdGenericAvailability" or req.get("result").get("action") == "ProdDescription" or req.get("result").get("action") == "ProdWork" or req.get("result").get("action") == "ProdSideEffect" or req.get("result").get("action") == "ProdDosageReco"):
             print(req.get("result").get("action"))
             actionIncompleteStatus = req.get("result").get("actionIncomplete")
             print(actionIncompleteStatus)
@@ -231,17 +205,13 @@ def processRequest(req):
             master_prod = ""
             response = ""
             status = False
-            if (actionIncompleteStatus and req.get("result").get("action") != "") and (req.get("result").get("parameters").get("ProductName") != "") and (
-                        req.get("result").get("parameters").get("UserOccupation") == "") and (
-                        req.get("result").get("parameters").get("UserRegion") == "") and (
-                        req.get("result").get("parameters").get("UserAge") == ""):
-                        session["userRegion"]=""
-                        session["productName"]=""
-                        session["userProfession"]=""
-                        session["response"]=""
-                        session["MainQuery"] = req.get("result").get("resolvedQuery")
-
-            print(session["MainQuery"])
+            # if (req.get("result").get("action") != "") and (req.get("result").get("parameters").get("ProductName") != "") and (
+            #             req.get("result").get("parameters").get("UserOccupation") == "") and (
+            #             req.get("result").get("parameters").get("UserRegion") == "") and (
+            #             req.get("result").get("parameters").get("UserAge") == ""):
+            #             session["MainQuery"] = req.get("result").get("resolvedQuery")
+            #
+            # print(session["MainQuery"])
             if actionIncompleteStatus:
                 print("Skipping")
             else:
@@ -257,17 +227,14 @@ def processRequest(req):
                                                                 "Apperance",req.get("result").get("parameters").get("ProdIndication"))
                         if Prod_Response != None:
                             status = True;
-                            master_prod = 'Product Appearance'
                             if len(Prod_Response[0]) > 0:
                                 fac_unfac = 'Facilitated'
-                                session["userRegion"]=req.get("result").get("parameters").get("UserRegion")
-                                session["productName"]=req.get("result").get("parameters").get("ProductName")
-                                session["userProfession"]=req.get("result").get("UserProfession")
-                                session["response"] = Prod_Response[0] + "Was this information useful?"
+                                response = Prod_Response[0] + "Was this information useful?"
                             else:
                                 fac_unfac = 'UnFacilitated'
-                                session["response"] = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
-                            session["fac_unfac"]=fac_unfac
+                                response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                            master_prod = 'Product Appearance'
+                            # response = Prod_Response[0]
                         else:
                             status = False
                             fac_unfac = 'Unfacilitated'
@@ -277,17 +244,13 @@ def processRequest(req):
                                                                 "Availability",req.get("result").get("parameters").get("ProdIndication"))
                         if Prod_Response != None:
                             status = True;
-                            session["masterProd"] = 'Product Availability'
                             if len(Prod_Response[0]) > 0:
                                 fac_unfac = 'Facilitated'
-                                session["userRegion"]=req.get("result").get("parameters").get("UserRegion")
-                                session["productName"]=req.get("result").get("parameters").get("ProductName")
-                                session["userProfession"]=req.get("result").get("UserProfession")
-                                session["response"] = Prod_Response[0] + "Was this information useful?"
+                                response = Prod_Response[0] + "Was this information useful?"
                             else:
                                 fac_unfac = 'UnFacilitated'
-                                session["response"] = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
-                            session["fac_unfac"]=fac_unfac
+                                response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                            master_prod = 'Product Availability'
                         else:
                             status = False;
                             fac_unfac = 'Unfacilitated'
@@ -297,17 +260,13 @@ def processRequest(req):
                                                                 "Generic_Availables",req.get("result").get("parameters").get("ProdIndication"))
                         if Prod_Response != None:
                             status = True
-                            master_prod = 'Product Generic Availability'
                             if len(Prod_Response[0]) > 0:
                                 fac_unfac = 'Facilitated'
-                                session["userRegion"]=req.get("result").get("parameters").get("UserRegion")
-                                session["productName"]=req.get("result").get("parameters").get("ProductName")
-                                session["userProfession"]=req.get("result").get("UserProfession")
-                                session["response"] = Prod_Response[0] + "Was this information useful?"
+                                response = Prod_Response[0] + "Was this information useful?"
                             else:
                                 fac_unfac = 'UnFacilitated'
-                                session["response"] = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
-                            session["fac_unfac"]=fac_unfac
+                                response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                            master_prod = 'Product Generic Availability'
                         else:
                             status = False
                             fac_unfac = 'Unfacilitated'
@@ -318,18 +277,13 @@ def processRequest(req):
                                 "description",req.get("result").get("parameters").get("ProdIndication"))
                             if Prod_Response != None:
                                 status = True
-                                master_prod = 'Product Description'
                                 if len(Prod_Response[0]) > 0:
                                     fac_unfac = 'Facilitated'
-                                    session["userRegion"] = req.get("result").get("parameters").get("UserRegion")
-                                    session["productName"] = req.get("result").get("parameters").get("ProductName")
-                                    session["userProfession"] = req.get("result").get("UserProfession")
-                                    session["response"] = Prod_Response[0] + "Was this information useful?"
+                                    response = Prod_Response[0] + "Was this information useful?"
                                 else:
                                     fac_unfac = 'UnFacilitated'
-                                    session[
-                                        "response"] = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
-                                session["fac_unfac"] = fac_unfac
+                                    response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                                master_prod = 'Product Generic Availability'
                             else:
                                 status = False
                                 fac_unfac = 'Unfacilitated'
@@ -341,18 +295,13 @@ def processRequest(req):
                                 "how_does_it_work",req.get("result").get("parameters").get("ProdIndication"))
                             if Prod_Response != None:
                                 status = True
-                                master_prod = 'Product How Does It Work '
                                 if len(Prod_Response[0]) > 0:
                                     fac_unfac = 'Facilitated'
-                                    session["userRegion"] = req.get("result").get("parameters").get("UserRegion")
-                                    session["productName"] = req.get("result").get("parameters").get("ProductName")
-                                    session["userProfession"] = req.get("result").get("UserProfession")
-                                    session["response"] = Prod_Response[0] + "Was this information useful?"
+                                    response = Prod_Response[0] + "Was this information useful?"
                                 else:
                                     fac_unfac = 'UnFacilitated'
-                                    session[
-                                        "response"] = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
-                                session["fac_unfac"] = fac_unfac
+                                    response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                                master_prod = 'Product Generic Availability'
                             else:
                                 status = False
                                 fac_unfac = 'Unfacilitated'
@@ -364,18 +313,13 @@ def processRequest(req):
                                 "sideeffects",req.get("result").get("parameters").get("ProdIndication"))
                             if Prod_Response != None:
                                 status = True
-                                master_prod = 'Product Side Effect'
                                 if len(Prod_Response[0]) > 0:
                                     fac_unfac = 'Facilitated'
-                                    session["userRegion"] = req.get("result").get("parameters").get("UserRegion")
-                                    session["productName"] = req.get("result").get("parameters").get("ProductName")
-                                    session["userProfession"] = req.get("result").get("UserProfession")
-                                    session["response"] = Prod_Response[0] + "Was this information useful?"
+                                    response = Prod_Response[0] + "Was this information useful?"
                                 else:
                                     fac_unfac = 'UnFacilitated'
-                                    session[
-                                        "response"] = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
-                                session["fac_unfac"] = fac_unfac
+                                    response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                                master_prod = 'Product Generic Availability'
                             else:
                                 status = False
                                 fac_unfac = 'Unfacilitated'
@@ -387,115 +331,41 @@ def processRequest(req):
                                 "number_of_times_reco_tot_start_dosage",req.get("result").get("parameters").get("ProdIndication"))
                             if Prod_Response != None:
                                 status = True
-                                master_prod = 'Product Dosage Recommendation'
                                 if len(Prod_Response[0]) > 0:
                                     fac_unfac = 'Facilitated'
-                                    session["userRegion"] = req.get("result").get("parameters").get("UserRegion")
-                                    session["productName"] = req.get("result").get("parameters").get("ProductName")
-                                    session["userProfession"] = req.get("result").get("UserProfession")
-                                    session["response"] = Prod_Response[0] + "Was this information useful?"
+                                    response = Prod_Response[0] + "Was this information useful?"
                                 else:
                                     fac_unfac = 'UnFacilitated'
-                                    session[
-                                        "response"] = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
-                                session["fac_unfac"] = fac_unfac
+                                    response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                                master_prod = 'Product Generic Availability'
                             else:
                                 status = False
                                 fac_unfac = 'Unfacilitated'
-                    elif (req.get("result").get("action") == "ProductAvailability-Yes" or
-                          req.get("result").get("action") == "ProdAppearance-Yes" or
-                          req.get("result").get("action") == "ProdGenericAvailability-Yes" or
-                          req.get("result").get("action") == "ProdDescription-Yes" or
-                          req.get("result").get("action") == "ProdWork-Yes" or
-                          req.get("result").get("action") == "ProdSideEffect-Yes" or
-                          req.get("result").get("action") == "ProdDosageReco-Yes"):
-                        insert_inquiry_details('Amer',
-                                               session["userRegion"],
-                                               session["productName"],
-                                               session["MainQuery"],
-                                               session["userProfession"],
-                                               "agent",
-                                               session["fac_unfac"],
-                                               datetime.datetime.utcnow(),
-                                               datetime.datetime.utcnow(),
-                                               0,
-                                               session["response"],
-                                               "",
-                                               session["masterProd"]
-                                               )
-                        session["userRegion"] = ""
-                        session["productName"] = ""
-                        session["userProfession"] = ""
-                        session["response"] = ""
-                        session["MainQuery"] = ""
-                        session["masterProd"] = ""
-
-                        return {
-                            "speech": "Thank you for your time. Have a good day",
-                            "displayText": "Thank you for your time. Have a good day",
-                            "source": "agent"
-                        }
-                    elif (req.get("result").get("action") == "ProductAvailability-Email" or
-                          req.get("result").get("action") == "ProdAppearance-Email" or
-                          req.get("result").get("action") == "ProdGenericAvailability-Email" or
-                          req.get("result").get("action") == "ProdDescription-Email" or
-                          req.get("result").get("action") == "ProdWork-Email" or
-                          req.get("result").get("action") == "ProdSideEffect-Email" or
-                          req.get("result").get("action") == "ProdDosageReco-Email" or
-                          req.get("result").get("action") == "ProductAvailability-No" or
-                          req.get("result").get("action") == "ProdAppearance-No" or
-                          req.get("result").get("action") == "ProdGenericAvailability-No" or
-                          req.get("result").get("action") == "ProdDescription-No" or
-                          req.get("result").get("action") == "ProdWork-No" or
-                          req.get("result").get("action") == "ProdSideEffect-No" or
-                          req.get("result").get("action") == "ProdDosageReco-No"):
-                        insert_inquiry_details('Amer',
-                                               session["userRegion"],
-                                               session["productName"],
-                                               session["MainQuery"],
-                                               session["userProfession"],
-                                               "agent",
-                                               session["fac_unfac"],
-                                               datetime.datetime.utcnow(),
-                                               datetime.datetime.utcnow(),
-                                               0,
-                                               session["response"],
-                                               req.get("result").get("parameters").get("UserMailId"),
-                                               session["masterProd"]
-                                               )
-                        session["userRegion"] = ""
-                        session["productName"] = ""
-                        session["userProfession"] = ""
-                        session["response"] = ""
-                        session["MainQuery"] = ""
-                        session["masterProd"] = ""
-
-                        return {
-                            "speech": "Thank you for your time. Have a good day",
-                            "displayText": "Thank you for your time. Have a good day",
-                            "source": "agent"
-                        }
+                            # Default else
                     else:
                         status = False
 
                 # final if Statement
                 if status:
-                    # insert_inquiry_details('Amer',
-                    #                        req.get("result").get("parameters").get("UserRegion"),
-                    #                        req.get("result").get("parameters").get("ProductName"),
-                    #                        master_prod,
-                    #                        req.get("result").get("UserProfession"),
-                    #                        req.get("result").get("source"),
-                    #                        fac_unfac,
-                    #                        datetime.datetime.utcnow(),
-                    #                        datetime.datetime.utcnow(),
-                    #                        0,
-                    #                        response
-                    #                        )
+                    insert_inquiry_details('Amer',
+                                           req.get("result").get("parameters").get("UserRegion"),
+                                           req.get("result").get("parameters").get("ProductName"),
+                                           master_prod,
+                                           req.get("result").get("UserProfession"),
+                                           req.get("result").get("source"),
+                                           fac_unfac,
+                                           datetime.datetime.utcnow(),
+                                           datetime.datetime.utcnow(),
+                                           0,
+                                           response
+                                           )
                     return {
-                        "speech": session["response"],
-                        "displayText": session["response"],
-                        "source": "agent"
+                        "speech": response,
+                        "displayText": response,
+                        # "data": data,
+                        # "contextOut": [],
+                        "AppId":1,
+                        "source": req.get("result").get("source")
                     }
                 else:
                     # insert_inquiry_details('Amer',
@@ -513,6 +383,8 @@ def processRequest(req):
                     return {
                         "speech": "Details Not found",
                         "displayText": "Details Not found",
+                        # "data": data,
+                        # "contextOut": [],
                         "source": req.get("result").get("source")
                     }
 

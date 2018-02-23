@@ -13,19 +13,29 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/medical_affair_assistant$app.coverage" NAME="app Coverage Results" MODIFIED="1519368880883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/medical_affair_assistant$app.coverage" NAME="app Coverage Results" MODIFIED="1519378016477" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
       <file leaf-file-name="app.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="203" column="70" lean-forward="true" selection-start-line="203" selection-start-column="70" selection-end-line="203" selection-end-column="70" />
+            <state relative-caret-position="330">
+              <caret line="381" column="46" lean-forward="true" selection-start-line="381" selection-start-column="46" selection-end-line="381" selection-end-column="46" />
               <folding>
                 <element signature="e#23#60#0" expanded="true" />
-                <marker date="1519368877405" expanded="true" signature="2487:2751" ph="INSERT INTO public.inquiry_data... " />
+                <marker date="1519378004258" expanded="true" signature="2459:2687" ph="INSERT INTO public.inquiry_data... " />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/requirements.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="297">
+              <caret line="9" column="16" lean-forward="true" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -33,8 +43,8 @@
       <file leaf-file-name="app.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/flask/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="1982" column="0" lean-forward="false" selection-start-line="1982" selection-start-column="0" selection-end-line="1982" selection-end-column="0" />
+            <state relative-caret-position="363">
+              <caret line="1984" column="51" lean-forward="true" selection-start-line="1984" selection-start-column="51" selection-end-line="1984" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -396,11 +406,26 @@
       <option name="project" value="LOCAL" />
       <updated>1519312836720</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Added logic to save Email id and Query data.">
+      <created>1519370815722</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1519370815723</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Added Secret key Configuration">
+      <created>1519373938620</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1519373938621</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-13" y="-13" width="2586" height="1386" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41935483" sideWeight="0.5015625" order="7" side_tool="true" content_ui="tabs" />
@@ -413,7 +438,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20373514" sideWeight="0.4984375" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25042444" sideWeight="0.4984375" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -476,41 +501,12 @@
     <MESSAGE value="added Lyrica changes in the script" />
     <MESSAGE value="Updated Column Name for Sideeffect and How Does it work" />
     <MESSAGE value="Added logic to save Email id and Query data." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added logic to save Email id and Query data." />
+    <MESSAGE value="Added Secret key Configuration" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Secret key Configuration" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app.py</url>
-          <line>76</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app.py</url>
-          <line>58</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app.py</url>
-          <line>184</line>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app.py</url>
-          <line>179</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app.py</url>
-          <line>197</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app.py</url>
-          <line>120</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/static/js/functions.js</url>
           <line>4</line>
@@ -539,7 +535,7 @@
           <caret line="186" column="22" lean-forward="true" selection-start-line="186" selection-start-column="22" selection-end-line="186" selection-end-column="22" />
           <folding>
             <element signature="e#23#60#0" expanded="true" />
-            <marker date="1519368877405" expanded="true" signature="2487:2751" ph="INSERT INTO public.inquiry_data... " />
+            <marker date="1519378004258" expanded="true" signature="2459:2687" ph="INSERT INTO public.inquiry_data... " />
           </folding>
         </state>
       </provider>
@@ -550,7 +546,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#23#60#0" expanded="true" />
-            <marker date="1519368877405" expanded="true" signature="2487:2751" ph="INSERT INTO public.inquiry_data... " />
+            <marker date="1519378004258" expanded="true" signature="2459:2687" ph="INSERT INTO public.inquiry_data... " />
           </folding>
         </state>
       </provider>
@@ -568,7 +564,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#23#60#0" expanded="true" />
-            <marker date="1519368877405" expanded="true" signature="2487:2751" ph="INSERT INTO public.inquiry_data... " />
+            <marker date="1519378004258" expanded="true" signature="2459:2687" ph="INSERT INTO public.inquiry_data... " />
           </folding>
         </state>
       </provider>
@@ -579,7 +575,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#23#60#0" expanded="true" />
-            <marker date="1519368877405" expanded="true" signature="2487:2751" ph="INSERT INTO public.inquiry_data... " />
+            <marker date="1519378004258" expanded="true" signature="2459:2687" ph="INSERT INTO public.inquiry_data... " />
           </folding>
         </state>
       </provider>
@@ -597,7 +593,7 @@
           <caret line="415" column="12" lean-forward="true" selection-start-line="415" selection-start-column="12" selection-end-line="415" selection-end-column="12" />
           <folding>
             <element signature="e#23#60#0" expanded="true" />
-            <marker date="1519368877405" expanded="true" signature="2487:2751" ph="INSERT INTO public.inquiry_data... " />
+            <marker date="1519378004258" expanded="true" signature="2459:2687" ph="INSERT INTO public.inquiry_data... " />
           </folding>
         </state>
       </provider>
@@ -615,7 +611,7 @@
           <caret line="429" column="11" lean-forward="true" selection-start-line="429" selection-start-column="11" selection-end-line="429" selection-end-column="11" />
           <folding>
             <element signature="e#23#60#0" expanded="true" />
-            <marker date="1519368877405" expanded="true" signature="2487:2751" ph="INSERT INTO public.inquiry_data... " />
+            <marker date="1519378004258" expanded="true" signature="2459:2687" ph="INSERT INTO public.inquiry_data... " />
           </folding>
         </state>
       </provider>
@@ -633,7 +629,7 @@
           <caret line="51" column="0" lean-forward="false" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
           <folding>
             <element signature="e#23#60#0" expanded="true" />
-            <marker date="1519368877405" expanded="true" signature="2487:2751" ph="INSERT INTO public.inquiry_data... " />
+            <marker date="1519378004258" expanded="true" signature="2459:2687" ph="INSERT INTO public.inquiry_data... " />
           </folding>
         </state>
       </provider>
@@ -725,20 +721,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
           <caret line="256" column="25" lean-forward="true" selection-start-line="256" selection-start-column="25" selection-end-line="256" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/setup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="6" column="14" lean-forward="false" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -868,21 +850,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="9" column="16" lean-forward="true" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/flask/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="1982" column="0" lean-forward="false" selection-start-line="1982" selection-start-column="0" selection-end-line="1982" selection-end-column="0" />
+        <state relative-caret-position="363">
+          <caret line="1984" column="51" lean-forward="true" selection-start-line="1984" selection-start-column="51" selection-end-line="1984" selection-end-column="51" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="203" column="70" lean-forward="true" selection-start-line="203" selection-start-column="70" selection-end-line="203" selection-end-column="70" />
+        <state relative-caret-position="330">
+          <caret line="381" column="46" lean-forward="true" selection-start-line="381" selection-start-column="46" selection-end-line="381" selection-end-column="46" />
           <folding>
             <element signature="e#23#60#0" expanded="true" />
-            <marker date="1519368877405" expanded="true" signature="2487:2751" ph="INSERT INTO public.inquiry_data... " />
+            <marker date="1519378004258" expanded="true" signature="2459:2687" ph="INSERT INTO public.inquiry_data... " />
           </folding>
         </state>
       </provider>
