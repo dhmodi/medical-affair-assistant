@@ -33,7 +33,8 @@ import requests
 app = Flask(__name__, static_url_path='')
 
 socketio = SocketIO(app)
-app.secret_key = 'my unobvious secret key'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY') or \
+    'e5ac358c-f0bf-11e5-9e39-d3b532c10a28'
 
 
 parser = ""
