@@ -608,8 +608,20 @@ def processRequest(req):
             conn.close()
             print(rows)
             print(list(columns))
+            print(len(columns))
 
-            if len(columns) <= 2:
+            #   error handling
+            if len(columns) <= 1:
+                outText="Please rephrase the question"
+                return {
+                    "speech": outText,
+                    "displayText": outText,
+                    # "data": data,
+                    # "contextOut": [],
+                    "source": "Dhaval"
+                }
+
+            elif (len(columns) > 1 & len(columns) <= 2):
                 xAxis = columns[0][0].split('.')[1]
                 yAxis = columns[1][0].split('.')[1]
                 xAxis = OutMap.get(xAxis) if OutMap.get(xAxis) else xAxis

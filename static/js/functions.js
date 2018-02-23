@@ -190,17 +190,17 @@ $(document).ready(function() {
                 }
             };
             //console.log("Chart Type is : " + val.type);
-            if (val.type == "geochart") {
+            if (val.type == "joe chart" | val.type == "geochart" | val.type == "geo chart") {
                 CreateGeoChart(val);
             } else if (val.type == "line") {
                 CreateLineChart(val);
-            } else if (val.type == "bar") {
+            } else if (val.type == "bar" | val.type == "barchart" | val.type == "bar chart" | val.type == "bar graph") {
                 CreateColumnChart(val);
             } else if (val.type == "donut") {
                 CreateDonutChart(val);
             } else if (val.type == "sankey") {
                 CreateSankeyChart(val);
-            } else if (val.type == "tree") {
+            } else if (val.type == "tree" | val.type == "treechart"| val.type == "tree chart" | val.type == "three chart" | val.type == "tree graph") {
                 CreateTreeChart(val);
             } else if (val.type == "area") {
                 CreateAreaChart(val);
