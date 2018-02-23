@@ -331,33 +331,34 @@ def processRequest(req):
     global fac_unfac
     fac_unfac = ""
     if is_Apiai_json == True:
-        if (req.get("result").get("action") == "ProdAppearance" or req.get("result").get(
-                "action") == "ProdAvailability" or req.get("result").get("action") == "ProdGenericAvailability" or
+        if (req.get("result").get("action") == "ProdAppearance" or
+                req.get("result").get("action") == "ProdAvailability" or
+                req.get("result").get("action") == "ProdGenericAvailability" or
                 req.get("result").get("action") == "ProdDescription" or
                 req.get("result").get("action") == "ProdWork" or
                 req.get("result").get("action") == "ProdSideEffect" or
                 req.get("result").get("action") == "ProdDosageReco" or
                 req.get("result").get("action") == "ProductAvailability-Yes" or
-                req.get("result").get("action") == "ProdAppearance-Yes" or
-                req.get("result").get("action") == "ProdGenericAvailability-Yes" or
-                req.get("result").get("action") == "ProdDescription-Yes" or
-                req.get("result").get("action") == "ProdWork-Yes" or
-                req.get("result").get("action") == "ProdSideEffect-Yes" or
-                req.get("result").get("action") == "ProdDosageReco-Yes" or
+                req.get("result").get("action") == "ProductAppearance-Yes" or
+                req.get("result").get("action") == "ProductGenericAvailability-Yes" or
+                req.get("result").get("action") == "ProductDescription-Yes" or
+                req.get("result").get("action") == "ProductWork-Yes" or
+                req.get("result").get("action") == "ProductSideEffect-Yes" or
+                req.get("result").get("action") == "ProductDosageReco-Yes" or
                 req.get("result").get("action") == "ProductAvailability-Email" or
-                req.get("result").get("action") == "ProdAppearance-Email" or
-                req.get("result").get("action") == "ProdGenericAvailability-Email" or
-                req.get("result").get("action") == "ProdDescription-Email" or
-                req.get("result").get("action") == "ProdWork-Email" or
-                req.get("result").get("action") == "ProdSideEffect-Email" or
-                req.get("result").get("action") == "ProdDosageReco-Email" or
+                req.get("result").get("action") == "ProductAppearance-Email" or
+                req.get("result").get("action") == "ProductGenericAvailability-Email" or
+                req.get("result").get("action") == "ProductDescription-Email" or
+                req.get("result").get("action") == "ProductWork-Email" or
+                req.get("result").get("action") == "ProductSideEffect-Email" or
+                req.get("result").get("action") == "ProductDosageReco-Email" or
                 req.get("result").get("action") == "ProductAvailability-No" or
-                req.get("result").get("action") == "ProdAppearance-No" or
-                req.get("result").get("action") == "ProdGenericAvailability-No" or
-                req.get("result").get("action") == "ProdDescription-No" or
-                req.get("result").get("action") == "ProdWork-No" or
-                req.get("result").get("action") == "ProdSideEffect-No" or
-                req.get("result").get("action") == "ProdDosageReco-No"):
+                req.get("result").get("action") == "ProductAppearance-No" or
+                req.get("result").get("action") == "ProductGenericAvailability-No" or
+                req.get("result").get("action") == "ProductDescription-No" or
+                req.get("result").get("action") == "ProductWork-No" or
+                req.get("result").get("action") == "ProductSideEffect-No" or
+                req.get("result").get("action") == "ProductDosageReco-No"):
             print(req.get("result").get("action"))
             actionIncompleteStatus = req.get("result").get("actionIncomplete")
             print(actionIncompleteStatus)
@@ -399,18 +400,39 @@ def processRequest(req):
                                 "ProdIndication"))
                         if Prod_Response != None:
                             status = True;
-                            master_prod = 'Product Appearance'
+                            tuple = ("masterProd", 'Product Appearance')
+                            globalList.append(tuple)
+                            # insert_into_temp("masterProd", 'Product Availability')
                             if len(Prod_Response[0]) > 0:
                                 fac_unfac = 'Facilitated'
-                                session["userRegion"] = req.get("result").get("parameters").get("UserRegion")
-                                session["productName"] = req.get("result").get("parameters").get("ProductName")
-                                session["userProfession"] = req.get("result").get("UserProfession")
-                                session["response"] = Prod_Response[0] + "Was this information useful?"
+                                # session["userRegion"] = req.get("result").get("parameters").get("UserRegion")
+                                # insert_into_temp("userRegion", req.get("result").get("parameters").get("UserRegion"))
+                                # tuple = ("userRegion", req.get("result").get("parameters").get("UserRegion"))
+                                # globalList.append(tuple)
+                                # session["productName"] = req.get("result").get("parameters").get("ProductName")
+                                # insert_into_temp("productName", req.get("result").get("parameters").get("ProductName"))
+                                tuple = ("productName", req.get("result").get("parameters").get("ProductName"))
+                                globalList.append(tuple)
+                                # session["userProfession"] = req.get("result").get("UserProfession")
+                                # insert_into_temp("userProfession", req.get("result").get("UserProfession"))
+                                # tuple = ("userOccupation", req.get("result").get("UserProfession"))
+                                # globalList.append(tuple)
+                                response = Prod_Response[0] + "Was this information useful?"
+                                # insert_into_temp("response", Prod_Response[0] + "Was this information useful?")
+                                tuple = ("response", Prod_Response[0] + "Was this information useful?")
+                                globalList.append(tuple)
                             else:
                                 fac_unfac = 'UnFacilitated'
-                                session[
-                                    "response"] = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
-                            session["fac_unfac"] = fac_unfac
+                                response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                                # insert_into_temp("response", "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID.")
+                                tuple = ("response",
+                                         "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID.")
+                                globalList.append(tuple)
+                            # session["fac_unfac"] = fac_unfac
+                            # insert_into_temp("fac_unfac",fac_unfac)
+                            tuple = ("fac_unfac", fac_unfac)
+                            globalList.append(tuple)
+                            insert_into_temp(globalList)
                         else:
                             status = False
                             fac_unfac = 'Unfacilitated'
@@ -463,19 +485,40 @@ def processRequest(req):
                                                                 req.get("result").get("parameters").get(
                                                                     "ProdIndication"))
                         if Prod_Response != None:
-                            status = True
-                            master_prod = 'Product Generic Availability'
+                            status = True;
+                            tuple = ("masterProd", 'Product Generic Availability')
+                            globalList.append(tuple)
+                            # insert_into_temp("masterProd", 'Product Availability')
                             if len(Prod_Response[0]) > 0:
                                 fac_unfac = 'Facilitated'
-                                session["userRegion"] = req.get("result").get("parameters").get("UserRegion")
-                                session["productName"] = req.get("result").get("parameters").get("ProductName")
-                                session["userProfession"] = req.get("result").get("UserProfession")
-                                session["response"] = Prod_Response[0] + "Was this information useful?"
+                                # session["userRegion"] = req.get("result").get("parameters").get("UserRegion")
+                                # insert_into_temp("userRegion", req.get("result").get("parameters").get("UserRegion"))
+                                # tuple = ("userRegion", req.get("result").get("parameters").get("UserRegion"))
+                                # globalList.append(tuple)
+                                # session["productName"] = req.get("result").get("parameters").get("ProductName")
+                                # insert_into_temp("productName", req.get("result").get("parameters").get("ProductName"))
+                                tuple = ("productName", req.get("result").get("parameters").get("ProductName"))
+                                globalList.append(tuple)
+                                # session["userProfession"] = req.get("result").get("UserProfession")
+                                # insert_into_temp("userProfession", req.get("result").get("UserProfession"))
+                                # tuple = ("userOccupation", req.get("result").get("UserProfession"))
+                                # globalList.append(tuple)
+                                response = Prod_Response[0] + "Was this information useful?"
+                                # insert_into_temp("response", Prod_Response[0] + "Was this information useful?")
+                                tuple = ("response", Prod_Response[0] + "Was this information useful?")
+                                globalList.append(tuple)
                             else:
                                 fac_unfac = 'UnFacilitated'
-                                session[
-                                    "response"] = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
-                            session["fac_unfac"] = fac_unfac
+                                response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                                # insert_into_temp("response", "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID.")
+                                tuple = ("response",
+                                         "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID.")
+                                globalList.append(tuple)
+                            # session["fac_unfac"] = fac_unfac
+                            # insert_into_temp("fac_unfac",fac_unfac)
+                            tuple = ("fac_unfac", fac_unfac)
+                            globalList.append(tuple)
+                            insert_into_temp(globalList)
                         else:
                             status = False
                             fac_unfac = 'Unfacilitated'
@@ -529,19 +572,40 @@ def processRequest(req):
                             req.get("result").get("parameters").get("ProductName"),
                             "how_does_it_work", req.get("result").get("parameters").get("ProdIndication"))
                         if Prod_Response != None:
-                            status = True
-                            master_prod = 'Product How Does It Work '
+                            status = True;
+                            tuple = ("masterProd", 'Product How Does It Work')
+                            globalList.append(tuple)
+                            # insert_into_temp("masterProd", 'Product Availability')
                             if len(Prod_Response[0]) > 0:
                                 fac_unfac = 'Facilitated'
-                                session["userRegion"] = req.get("result").get("parameters").get("UserRegion")
-                                session["productName"] = req.get("result").get("parameters").get("ProductName")
-                                session["userProfession"] = req.get("result").get("UserProfession")
-                                session["response"] = Prod_Response[0] + "Was this information useful?"
+                                # session["userRegion"] = req.get("result").get("parameters").get("UserRegion")
+                                # insert_into_temp("userRegion", req.get("result").get("parameters").get("UserRegion"))
+                                # tuple = ("userRegion", req.get("result").get("parameters").get("UserRegion"))
+                                # globalList.append(tuple)
+                                # session["productName"] = req.get("result").get("parameters").get("ProductName")
+                                # insert_into_temp("productName", req.get("result").get("parameters").get("ProductName"))
+                                tuple = ("productName", req.get("result").get("parameters").get("ProductName"))
+                                globalList.append(tuple)
+                                # session["userProfession"] = req.get("result").get("UserProfession")
+                                # insert_into_temp("userProfession", req.get("result").get("UserProfession"))
+                                # tuple = ("userOccupation", req.get("result").get("UserProfession"))
+                                # globalList.append(tuple)
+                                response = Prod_Response[0] + "Was this information useful?"
+                                # insert_into_temp("response", Prod_Response[0] + "Was this information useful?")
+                                tuple = ("response", Prod_Response[0] + "Was this information useful?")
+                                globalList.append(tuple)
                             else:
                                 fac_unfac = 'UnFacilitated'
-                                session[
-                                    "response"] = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
-                            session["fac_unfac"] = fac_unfac
+                                response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                                # insert_into_temp("response", "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID.")
+                                tuple = ("response",
+                                         "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID.")
+                                globalList.append(tuple)
+                            # session["fac_unfac"] = fac_unfac
+                            # insert_into_temp("fac_unfac",fac_unfac)
+                            tuple = ("fac_unfac", fac_unfac)
+                            globalList.append(tuple)
+                            insert_into_temp(globalList)
                         else:
                             status = False
                             fac_unfac = 'Unfacilitated'
@@ -552,19 +616,40 @@ def processRequest(req):
                             req.get("result").get("parameters").get("ProductName"),
                             "sideeffects", req.get("result").get("parameters").get("ProdIndication"))
                         if Prod_Response != None:
-                            status = True
-                            master_prod = 'Product Side Effect'
+                            status = True;
+                            tuple = ("masterProd", 'Product Side Effect')
+                            globalList.append(tuple)
+                            # insert_into_temp("masterProd", 'Product Availability')
                             if len(Prod_Response[0]) > 0:
                                 fac_unfac = 'Facilitated'
-                                session["userRegion"] = req.get("result").get("parameters").get("UserRegion")
-                                session["productName"] = req.get("result").get("parameters").get("ProductName")
-                                session["userProfession"] = req.get("result").get("UserProfession")
-                                session["response"] = Prod_Response[0] + "Was this information useful?"
+                                # session["userRegion"] = req.get("result").get("parameters").get("UserRegion")
+                                # insert_into_temp("userRegion", req.get("result").get("parameters").get("UserRegion"))
+                                # tuple = ("userRegion", req.get("result").get("parameters").get("UserRegion"))
+                                # globalList.append(tuple)
+                                # session["productName"] = req.get("result").get("parameters").get("ProductName")
+                                # insert_into_temp("productName", req.get("result").get("parameters").get("ProductName"))
+                                tuple = ("productName", req.get("result").get("parameters").get("ProductName"))
+                                globalList.append(tuple)
+                                # session["userProfession"] = req.get("result").get("UserProfession")
+                                # insert_into_temp("userProfession", req.get("result").get("UserProfession"))
+                                # tuple = ("userOccupation", req.get("result").get("UserProfession"))
+                                # globalList.append(tuple)
+                                response = Prod_Response[0] + "Was this information useful?"
+                                # insert_into_temp("response", Prod_Response[0] + "Was this information useful?")
+                                tuple = ("response", Prod_Response[0] + "Was this information useful?")
+                                globalList.append(tuple)
                             else:
                                 fac_unfac = 'UnFacilitated'
-                                session[
-                                    "response"] = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
-                            session["fac_unfac"] = fac_unfac
+                                response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                                # insert_into_temp("response", "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID.")
+                                tuple = ("response",
+                                         "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID.")
+                                globalList.append(tuple)
+                            # session["fac_unfac"] = fac_unfac
+                            # insert_into_temp("fac_unfac",fac_unfac)
+                            tuple = ("fac_unfac", fac_unfac)
+                            globalList.append(tuple)
+                            insert_into_temp(globalList)
                         else:
                             status = False
                             fac_unfac = 'Unfacilitated'
@@ -576,29 +661,50 @@ def processRequest(req):
                             "number_of_times_reco_tot_start_dosage",
                             req.get("result").get("parameters").get("ProdIndication"))
                         if Prod_Response != None:
-                            status = True
-                            master_prod = 'Product Dosage Recommendation'
+                            status = True;
+                            tuple = ("masterProd", 'Product Dosage Recommendation')
+                            globalList.append(tuple)
+                            # insert_into_temp("masterProd", 'Product Availability')
                             if len(Prod_Response[0]) > 0:
                                 fac_unfac = 'Facilitated'
-                                session["userRegion"] = req.get("result").get("parameters").get("UserRegion")
-                                session["productName"] = req.get("result").get("parameters").get("ProductName")
-                                session["userProfession"] = req.get("result").get("UserProfession")
-                                session["response"] = Prod_Response[0] + "Was this information useful?"
+                                # session["userRegion"] = req.get("result").get("parameters").get("UserRegion")
+                                # insert_into_temp("userRegion", req.get("result").get("parameters").get("UserRegion"))
+                                # tuple = ("userRegion", req.get("result").get("parameters").get("UserRegion"))
+                                # globalList.append(tuple)
+                                # session["productName"] = req.get("result").get("parameters").get("ProductName")
+                                # insert_into_temp("productName", req.get("result").get("parameters").get("ProductName"))
+                                tuple = ("productName", req.get("result").get("parameters").get("ProductName"))
+                                globalList.append(tuple)
+                                # session["userProfession"] = req.get("result").get("UserProfession")
+                                # insert_into_temp("userProfession", req.get("result").get("UserProfession"))
+                                # tuple = ("userOccupation", req.get("result").get("UserProfession"))
+                                # globalList.append(tuple)
+                                response = Prod_Response[0] + "Was this information useful?"
+                                # insert_into_temp("response", Prod_Response[0] + "Was this information useful?")
+                                tuple = ("response", Prod_Response[0] + "Was this information useful?")
+                                globalList.append(tuple)
                             else:
                                 fac_unfac = 'UnFacilitated'
-                                session[
-                                    "response"] = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
-                            session["fac_unfac"] = fac_unfac
+                                response = "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID."
+                                # insert_into_temp("response", "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID.")
+                                tuple = ("response",
+                                         "Your query will be sent to the concerned SME Team and they will get in touch with you. Please provide your Mail ID.")
+                                globalList.append(tuple)
+                            # session["fac_unfac"] = fac_unfac
+                            # insert_into_temp("fac_unfac",fac_unfac)
+                            tuple = ("fac_unfac", fac_unfac)
+                            globalList.append(tuple)
+                            insert_into_temp(globalList)
                         else:
                             status = False
                             fac_unfac = 'Unfacilitated'
                     elif (req.get("result").get("action") == "ProductAvailability-Yes" or
-                          req.get("result").get("action") == "ProdAppearance-Yes" or
-                          req.get("result").get("action") == "ProdGenericAvailability-Yes" or
-                          req.get("result").get("action") == "ProdDescription-Yes" or
-                          req.get("result").get("action") == "ProdWork-Yes" or
-                          req.get("result").get("action") == "ProdSideEffect-Yes" or
-                          req.get("result").get("action") == "ProdDosageReco-Yes"):
+                          req.get("result").get("action") == "ProductAppearance-Yes" or
+                          req.get("result").get("action") == "ProductGenericAvailability-Yes" or
+                          req.get("result").get("action") == "ProductDescription-Yes" or
+                          req.get("result").get("action") == "ProductWork-Yes" or
+                          req.get("result").get("action") == "ProductSideEffect-Yes" or
+                          req.get("result").get("action") == "ProductDosageReco-Yes"):
                         row = select_temp_data()
                         for item in row:
                             if item[0] == "MainQuery":
@@ -639,19 +745,19 @@ def processRequest(req):
                             "source": "agent"
                         }
                     elif (req.get("result").get("action") == "ProductAvailability-Email" or
-                          req.get("result").get("action") == "ProdAppearance-Email" or
-                          req.get("result").get("action") == "ProdGenericAvailability-Email" or
-                          req.get("result").get("action") == "ProdDescription-Email" or
-                          req.get("result").get("action") == "ProdWork-Email" or
-                          req.get("result").get("action") == "ProdSideEffect-Email" or
-                          req.get("result").get("action") == "ProdDosageReco-Email" or
+                          req.get("result").get("action") == "ProductAppearance-Email" or
+                          req.get("result").get("action") == "ProductGenericAvailability-Email" or
+                          req.get("result").get("action") == "ProductDescription-Email" or
+                          req.get("result").get("action") == "ProductWork-Email" or
+                          req.get("result").get("action") == "ProductSideEffect-Email" or
+                          req.get("result").get("action") == "ProductDosageReco-Email" or
                           req.get("result").get("action") == "ProductAvailability-No" or
-                          req.get("result").get("action") == "ProdAppearance-No" or
-                          req.get("result").get("action") == "ProdGenericAvailability-No" or
-                          req.get("result").get("action") == "ProdDescription-No" or
-                          req.get("result").get("action") == "ProdWork-No" or
-                          req.get("result").get("action") == "ProdSideEffect-No" or
-                          req.get("result").get("action") == "ProdDosageReco-No"):
+                          req.get("result").get("action") == "ProductAppearance-No" or
+                          req.get("result").get("action") == "ProductGenericAvailability-No" or
+                          req.get("result").get("action") == "ProductDescription-No" or
+                          req.get("result").get("action") == "ProductWork-No" or
+                          req.get("result").get("action") == "ProductSideEffect-No" or
+                          req.get("result").get("action") == "ProductDosageReco-No"):
 
                         row = select_temp_data()
                         for item in row:
