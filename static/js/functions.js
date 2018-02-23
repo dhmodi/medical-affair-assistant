@@ -192,7 +192,7 @@ $(document).ready(function() {
             //console.log("Chart Type is : " + val.type);
             if (val.type == "joe chart" | val.type == "geochart" | val.type == "geo chart") {
                 CreateGeoChart(val);
-            } else if (val.type == "line") {
+            } else if (val.type == "line" | val.type == "line chart" | val.type == "line graph") {
                 CreateLineChart(val);
             } else if (val.type == "bar" | val.type == "barchart" | val.type == "bar chart" | val.type == "bar graph") {
                 CreateColumnChart(val);
