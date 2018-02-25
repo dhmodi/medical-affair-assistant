@@ -1136,9 +1136,9 @@ def processRequest(req):
                 }
 
             else:
-                xAxis = columns[0][0].split('.')[1]
-                yAxis = columns[1][0].split('.')[1]
-                zAxis = columns[2][0].split('.')[1]
+                xAxis = columns[1][0].split('.')[1]
+                yAxis = columns[2][0].split('.')[1]
+                zAxis = columns[0][0].split('.')[1]
                 xAxis = OutMap.get(xAxis) if OutMap.get(xAxis) else xAxis
                 yAxis = OutMap.get(yAxis) if OutMap.get(yAxis) else yAxis
                 zAxis = OutMap.get(zAxis) if OutMap.get(zAxis) else zAxis
@@ -1482,7 +1482,7 @@ def processRequest(req):
                 print("agg_df:")
                 print(agg_df)
 
-                if chartType == 'geochart':
+                if (chartType == 'geochart' or chartType == 'geo chart' or chartType == 'joe chart'):
                     for id, cn in enumerate(agg_df['label']):
                         if cn == 'UK':
                             agg_df['label'][id] = 'GB'
@@ -1515,9 +1515,9 @@ def processRequest(req):
 
 
             else:
-                xAxis = columns[0][0].split('.')[1]
-                yAxis = columns[1][0].split('.')[1]
-                zAxis = columns[2][0].split('.')[1]
+                xAxis = columns[1][0].split('.')[1]
+                yAxis = columns[2][0].split('.')[1]
+                zAxis = columns[0][0].split('.')[1]
                 xAxis = OutMap.get(xAxis) if OutMap.get(xAxis) else xAxis
                 yAxis = OutMap.get(yAxis) if OutMap.get(yAxis) else yAxis
                 zAxis = OutMap.get(zAxis) if OutMap.get(zAxis) else zAxis
