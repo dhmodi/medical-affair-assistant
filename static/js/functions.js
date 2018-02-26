@@ -194,13 +194,13 @@ $(document).ready(function() {
                 CreateGeoChart(val);
             } else if (val.type == "line" | val.type == "line chart" | val.type == "line graph") {
                 CreateLineChart(val);
-            } else if (val.type == "bar" | val.type == "barchart" | val.type == "bar chart" | val.type == "bar graph") {
+            } else if (val.type == "bar" | val.type == "barchart" | val.type == "bar chart" | val.type == "bar graph" | val.type == "bargraph") {
                 CreateColumnChart(val);
             } else if (val.type == "donut") {
                 CreateDonutChart(val);
             } else if (val.type == "sankey") {
                 CreateSankeyChart(val);
-            } else if (val.type == "tree" | val.type == "treechart"| val.type == "tree chart" | val.type == "three chart" | val.type == "tree graph") {
+            } else if (val.type == "tree" | val.type == "treechart"| val.type == "tree chart" | val.type == "three chart" | val.type == "tree graph" | val.type == "heat map" | val.type == "heatmap") {
                 CreateTreeChart(val);
             } else if (val.type == "area") {
                 CreateAreaChart(val);

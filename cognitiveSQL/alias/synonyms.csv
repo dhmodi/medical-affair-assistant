@@ -1,7 +1,7 @@
 sum,total number,how many
 min,minimum,lowest,low,least
 max,maximum,max,highest,high,more
-datatype trend dq_score,dq trend,dq trending,dcu trend,dcu trending,quality trend
+datatype trend dq_score,dq trend,dq trending,dcu trend,dcu trending,quality trend,quality trending
 dimension failcount known_issues,known issues
 score dq_score,dq score,dcu score,quality score
 datatype,data type
