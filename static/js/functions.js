@@ -544,7 +544,7 @@ var baseUrl = "https://api.dialogflow.com/v1/";
 var messages = [], //array that hold the record of each string in chat
     lastUserMessage = "", //keeps track of the most recent input string from the user
     botMessage = "", //var keeps track of what the chatbot is going to say
-    botName = 'Mira'; //name of the chatbot
+    botName = 'Mia'; //name of the chatbot
 
 function startRecognition() {
     recognition = new webkitSpeechRecognition();
